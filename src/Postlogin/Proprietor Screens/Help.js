@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import React from "react";
 import { IconButton } from "react-native-paper";
@@ -20,7 +21,14 @@ export default function Help({ navigation }) {
         style={styles.nav}
         onPress={() => navigation.openDrawer()}
       />
-      <Text>Help</Text>
+      <ScrollView style={{ top: width / 4.5 }}>
+        <Text>How do I create an account?</Text>
+        <Text>How do I reset my password?</Text>
+        <Text>How do I delete my account?</Text>
+        <Text>How do I contact customer support?</Text>
+        <Text>Can I use the app offline?</Text>
+        <Text>What do I do if I forget my password?</Text>
+      </ScrollView>
     </View>
   );
 }
