@@ -21,11 +21,94 @@ export default function Help({ navigation }) {
         style={styles.nav}
         onPress={() => navigation.openDrawer()}
       />
-      <ScrollView style={{ top: width / 4.5 }}>
-        <Text>How do I create an account?</Text>
-        <Text>How do I reset my password?</Text>
-        <Text>How do I delete my account?</Text>
-        <Text>How do I contact customer support?</Text>
+      <ScrollView style={{ top: width / 4.5, flex: 1, flexGrow: 1 }}>
+        <View style={styles.AccountContainer}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}>
+            Q. How do I create an account?
+          </Text>
+          <Text
+            style={{
+              marginTop: 15,
+              fontSize: 15,
+              fontFamily: "sans-serif-light",
+            }}
+          >
+            To Create an Account:
+            {"\n"}
+          </Text>
+          <Text style={styles.AccountCreateSteps}>
+            1. Tap The Create Account Button{"\n"}
+            2. Submit Your Phone Number To Get the OTP{"\n"}3. Fill Up the
+            Details.{"\n"}4. Select The User Type Correctly{" "}
+            <Text>
+              {"\n"}
+              5. If you are a Shopkeeper select{" "}
+              <Text style={{ fontWeight: "bold" }}>Propreitor</Text> else select
+              <Text style={{ fontWeight: "bold" }}> Delivery Person</Text>
+            </Text>
+          </Text>
+
+          <Text
+            style={{
+              marginTop: 10,
+              fontSize: 13,
+              textAlign: "left",
+              width: width / 1.25,
+              fontFamily: "sans-serif-light",
+            }}
+          >
+            {" "}
+            If you are a ShopOwner, redirect to next screen and fill up the
+            Required Details
+          </Text>
+        </View>
+
+        <View style={styles.AccountContainer}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}>
+            Q. How do I reset my password?
+          </Text>
+          <Text
+            style={{
+              marginTop: 15,
+              fontSize: 15,
+              fontFamily: "sans-serif-light",
+            }}
+          >
+            To Reset Your Password :{"\n"}
+          </Text>
+          <Text style={styles.ResetPassSteps}>
+            1. In Login Screen Tap
+            <Text style={{ fontWeight: "bold" }}> Forgot Password</Text>
+            {"\n"}2. Enter Your Phone Number to get The OTP{"\n"}3. Insert the
+            OTP and Enter your New Password{"\n"}4. Tap The Reset Password
+            Button and your Password is Changed Successfully{"\n"}
+            5. Now Login With Your New Credentials
+          </Text>
+        </View>
+
+        <View style={styles.AccountContainer}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}>
+            Q. How do I delete my account?
+          </Text>
+          <Text
+            style={{
+              marginTop: 15,
+              fontSize: 15,
+              fontFamily: "sans-serif-light",
+            }}
+          >
+            To Delete Your Account:{"\n"}
+          </Text>
+          <Text style={styles.DeletAccountSteps}>
+            1. Login With your Credentials{"\n"}2. Goto Profile{"\n"}3. Select{" "}
+            <Text style={{ fontWeight: "bold" }}>Delete Account</Text>
+          </Text>
+        </View>
+        <View style={styles.AccountContainer}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}>
+            Q. How do I contact customer support?
+          </Text>
+        </View>
         <Text>Can I use the app offline?</Text>
         <Text>What do I do if I forget my password?</Text>
       </ScrollView>
@@ -47,5 +130,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 50,
     alignItems: "center",
+  },
+  AccountContainer: {
+    marginLeft: 25,
+    marginBottom: 20,
+    padding: 2,
+  },
+  AccountCreateSteps: {
+    fontSize: 18,
+    textAlign: "auto",
+    fontFamily: "sans-serif-light",
+    width: width / 1.15,
+  },
+  ResetPassSteps: {
+    fontSize: 18,
+    textAlign: "auto",
+    fontFamily: "sans-serif-light",
+    width: width / 1.05,
+  },
+  DeletAccountSteps: {
+    fontSize: 18,
+    textAlign: "auto",
+    fontFamily: "sans-serif-light",
+    width: width / 1.05,
   },
 });
