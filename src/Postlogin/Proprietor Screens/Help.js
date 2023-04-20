@@ -108,9 +108,55 @@ export default function Help({ navigation }) {
           <Text style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}>
             Q. How do I contact customer support?
           </Text>
+          <Text style={styles.CustomerSupport}>
+            You Can Call Us at 080-6872 7374 or Email Us At
+            <Text style={{ fontWeight: "bold" }}> support@HyperLocal.com</Text>
+          </Text>
         </View>
-        <Text>Can I use the app offline?</Text>
-        <Text>What do I do if I forget my password?</Text>
+        <View style={styles.AccountContainer}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}>
+            Q. Can I use the app offline?
+          </Text>
+          <Text style={styles.CustomerSupport}>
+            No, You Cannot Use Our App Offline.
+          </Text>
+        </View>
+        <View style={styles.AccountContainer}>
+          <Text
+            style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}
+            s
+          >
+            Q. What do I do if I forget my password?
+          </Text>
+          <Text
+            style={{
+              marginTop: 15,
+              fontSize: 15,
+              fontFamily: "sans-serif-light",
+            }}
+          >
+            If You Have Forgotten Your Password :{"\n"}
+          </Text>
+          <Text style={styles.ResetPassSteps}>
+            1. In Login Screen Tap
+            <Text style={{ fontWeight: "bold" }}> Forgot Password</Text>
+            {"\n"}2. Enter Your Phone Number to get The OTP{"\n"}3. Insert the
+            OTP and Enter your New Password{"\n"}4. Tap The Reset Password
+            Button and your Password is Changed Successfully{"\n"}
+            5. Now Login With Your New Credentials
+          </Text>
+        </View>
+
+        <View style={styles.AccountContainer}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", right: width / 20 }}>
+            Q. As a Propreitor Can I Use This Account As A Delivery Person?
+          </Text>
+          <Text style={styles.AccountChange}>
+            No,you cannot do that. You Need To Create A New Account If You Want
+            to Be a Delivery person
+          </Text>
+        </View>
+        <View style={{ height: width / 5 }} />
       </ScrollView>
     </View>
   );
@@ -153,5 +199,19 @@ const styles = StyleSheet.create({
     textAlign: "auto",
     fontFamily: "sans-serif-light",
     width: width / 1.05,
+  },
+  CustomerSupport: {
+    fontSize: 18,
+    textAlign: "auto",
+    fontFamily: "sans-serif-light",
+    width: width / 1.18,
+    marginTop: 15,
+  },
+  AccountChange: {
+    fontSize: 18,
+    textAlign: "auto",
+    fontFamily: "sans-serif-light",
+    width: width / 1.1,
+    marginTop: 15,
   },
 });
