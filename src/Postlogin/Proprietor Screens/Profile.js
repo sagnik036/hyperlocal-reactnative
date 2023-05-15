@@ -6,12 +6,36 @@ import {
   Dimensions,
   Image,
   
+  
 } from "react-native";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
+import { Authcontext } from "../../../api/Authcontext";
+import { API_URl } from "@env";
+import axios from "axios";
 const { height, width } = Dimensions.get("window");
 
 export default function Profile({ navigation }) {
+  const { userInfo } = useContext(Authcontext);
+  const [shopinfo, setShopinfo]= useState(null)
+  const shopid = userInfo.data.id
+  const shoptoken = userInfo.token.access
+  const apicall = () => {
+    axios.get(`${API_URl}/shopdata/?search=${shopid}`,{
+      headers:{
+        Authorization:`Bearer ${shoptoken}` 
+      }
+    }) .then((res) =>{
+     // console.log (res.data)
+     let shopinfo = res.data
+     setShopinfo (shopinfo)
+    }) .catch((err) =>{
+      console.log (err)
+    })
+  }
+  useEffect (() => {
+    apicall()
+  } ,[])
   return (
     <View style={styles.container}>
       <IconButton
@@ -22,6 +46,7 @@ export default function Profile({ navigation }) {
         style={styles.nav}
         onPress={() => navigation.openDrawer()}
       />
+      
       <IconButton 
         icon="delete"
         iconColor="black"
@@ -30,31 +55,38 @@ export default function Profile({ navigation }) {
         style={styles.delete}
       />
       <Text style={styles.text1}>Hey</Text>
-      <Text style={styles.text2}>Sayantika</Text>
+      <Text style={styles.text2}>{userInfo.data.first_name}</Text>
       <Image
         style={styles.Dprofilepic}
         source={{
           uri: "https://www.forbesindia.com/media/wpower2020/Monika%20Shergill.jpg",
         }}
       />
-      <Text style={styles.text3}>Logged in Via  9674281979</Text>
+      <Text style={styles.text3}>Logged in Via  {userInfo.data.mobile_number}</Text>
       <View style={styles.round1}>
       <Text style={styles.text4}>Default Address</Text>
-      <Text style={styles.text5}>Puja Enclave, Prantika, Garia, Kolkata, 
-      700084</Text>
+      {shopinfo && shopinfo.results ? (
+    <Text style={styles.text5}>{shopinfo.results[0].shop_address}</Text>
+  ) : (
+    <Text>No vehicle information available</Text>
+  )}
       </View>
       <View style={styles.round2}>
       <Text style={styles.text6}>Shop Details</Text>
-      <Text style={styles.text7}>Wood Garden</Text>
-      <Text style={styles.text8}>A Furtinure Store</Text>  
-      <Text style={styles.text9}>Lorem Ipsum, dolor sit amet consectur adipisicing  elit Voluptate cum, velit mariores optio aspernatur commodi facilis nostrum quam voluptatibus similique, et dolores harum qul non pariatur molestiae repellat id deleniti</Text> 
-      <Text style={styles.text10}>Shop GST: </Text>
-      <Text style={styles.text11}>1234567890!@#$% </Text>
-      <Text style={styles.text12}>Located In </Text>
-      <Text style={styles.text13}>Kudghat, 10H, Chandi Ghosh Road, Asoke Nagar, Kolkata, West Bengal, 700040 </Text>
+      
+      {shopinfo && shopinfo.results ? (
+    <><Text style={styles.text7}>{shopinfo.results[0].shop_name}</Text>
+    <Text style={styles.text9}>{shopinfo.results[0].shop_shortdescribtion} </Text> 
+    <Text style={styles.text10}>Shop GST: </Text>
+    <Text style={styles.text11}>1234567890!@#$% </Text>
+    <Text style={styles.text12}>Located In </Text>
+    <Text style={styles.text13}>{shopinfo.results[0].shop_address}</Text></>
+  ) : (
+    <Text>No vehicle information available</Text>
+  )}
       </View>
       <TouchableOpacity style={styles.Button} onPress={() => validation()}>
-            <Text >Delete Account</Text>
+            <Text style={styles.buttontext}>Delete Account</Text>
           </TouchableOpacity>
      </View>
   );
@@ -77,12 +109,12 @@ const styles = StyleSheet.create({
   },
   text1:{
     bottom:height/19,
-    right: width/3.3,
+    right: width/3.1,
     fontSize:21
   },
   text2:{
     bottom: height/18,
-    right: width/4.5,
+    right: width/4,
     fontSize:27,
     fontWeight:"bold"
   },
@@ -114,12 +146,14 @@ const styles = StyleSheet.create({
     left: width/20,
     fontSize:16,
     fontWeight:"bold",
-    color:"grey"
+    color:"grey",
+    
   },
   text5:{
     top: height/50,
     left: width/20,
     fontSize:16,
+    width:300,
   },
   text6:{
     top: height/85,
@@ -171,13 +205,14 @@ const styles = StyleSheet.create({
   text13:{
     top: height/70,
     left:width/22,
+    width:320,
   },
   round1: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     bottom: height/30,
     width: 350,
-    height: 90,
+    height: 120,
     borderRadius: 20,
     borderWidth: 0.5,
   },
@@ -186,7 +221,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     top: height/20,
     width: 350,
-    height: 250,
+    height: 200,
     borderRadius: 20,
     borderWidth: 0.5,
   },
@@ -199,6 +234,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: width / 1.2,
     height: width / 8,
-    top:height/10
+    top:height/10,
   },
+  buttontext:{
+    color:"white",
+  }
 });
