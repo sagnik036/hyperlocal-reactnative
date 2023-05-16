@@ -48,7 +48,7 @@ export default function Livelocation({ navigation, route }) {
     if (validation) {
       navigation.navigate("login");
     } else {
-      SetError("Ragistration Fialed!! Try Again");
+      SetError("Registration Failed!! Try Again");
     }
   };
 
