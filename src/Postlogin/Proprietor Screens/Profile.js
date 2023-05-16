@@ -68,30 +68,30 @@ export default function Profile({ navigation }) {
       </Text>
       <View style={styles.round1}>
         <Text style={styles.text4}>Default Address</Text>
-        {shopinfo && shopinfo.results ? (
+        {shopinfo && shopinfo.count === 1 ? (
           <Text style={styles.text5}>{shopinfo.results[0].shop_address}</Text>
         ) : (
-          <Text>No vehicle information available</Text>
+          <Text>No shop information available</Text>
         )}
       </View>
       <View style={styles.round2}>
         <Text style={styles.text6}>Shop Details</Text>
 
-        {shopinfo && shopinfo.results ? (
+        {shopinfo && shopinfo.count === 1 ? (
           <>
             <Text style={styles.text7}>{shopinfo.results[0].shop_name}</Text>
             <Text style={styles.text9}>
               {shopinfo.results[0].shop_shortdescribtion}{" "}
             </Text>
             <Text style={styles.text10}>Shop GST: </Text>
-            <Text style={styles.text11}>1234567890!@#$% </Text>
+            <Text style={styles.text11}>{shopinfo.results[0].shop_gst} </Text>
             <Text style={styles.text12}>Located In </Text>
             <Text style={styles.text13}>
               {shopinfo.results[0].shop_address}
             </Text>
           </>
         ) : (
-          <Text>No vehicle information available</Text>
+          <Text>No Shop information available</Text>
         )}
       </View>
       <TouchableOpacity style={styles.Button} onPress={() => validation()}>
