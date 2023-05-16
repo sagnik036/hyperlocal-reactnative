@@ -5,7 +5,7 @@ import { API_URl } from "@env";
 
 export const Authcontext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children, navigation }) => {
   const [isLoading, SetIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
@@ -233,6 +233,29 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  //Delete Shop data
+  const DeleteAcc = () => {
+    SetIsLoading(true);
+    let dId = userInfo.token.access;
+    axios
+      .delete(`${API_URl}/delete-data/`, {
+        headers: {
+          Authorization: `Bearer ${dId}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setUserToken(null);
+        AsyncStorage.removeItem("userInfo");
+        AsyncStorage.removeItem("userToken");
+        SetIsLoading(false);
+        alert("Account Deleted Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Authcontext.Provider
       value={{
@@ -249,6 +272,7 @@ export const AuthProvider = ({ children }) => {
         DeliveryAccess,
         otptoken,
         RegisterShopData,
+        DeleteAcc,
       }}
     >
       {children}

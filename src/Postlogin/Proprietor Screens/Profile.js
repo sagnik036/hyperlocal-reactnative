@@ -5,8 +5,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  
-  
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
@@ -17,25 +15,28 @@ const { height, width } = Dimensions.get("window");
 
 export default function Profile({ navigation }) {
   const { userInfo } = useContext(Authcontext);
-  const [shopinfo, setShopinfo]= useState(null)
-  const shopid = userInfo.data.id
-  const shoptoken = userInfo.token.access
+  const [shopinfo, setShopinfo] = useState(null);
+  const shopid = userInfo.data.id;
+  const shoptoken = userInfo.token.access;
   const apicall = () => {
-    axios.get(`${API_URl}/shopdata/?search=${shopid}`,{
-      headers:{
-        Authorization:`Bearer ${shoptoken}` 
-      }
-    }) .then((res) =>{
-     // console.log (res.data)
-     let shopinfo = res.data
-     setShopinfo (shopinfo)
-    }) .catch((err) =>{
-      console.log (err)
-    })
-  }
-  useEffect (() => {
-    apicall()
-  } ,[])
+    axios
+      .get(`${API_URl}/shopdata/?search=${shopid}`, {
+        headers: {
+          Authorization: `Bearer ${shoptoken}`,
+        },
+      })
+      .then((res) => {
+        //console.log(res.data);
+        let shopinfo = res.data;
+        setShopinfo(shopinfo);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    apicall();
+  }, []);
   return (
     <View style={styles.container}>
       <IconButton
@@ -46,8 +47,8 @@ export default function Profile({ navigation }) {
         style={styles.nav}
         onPress={() => navigation.openDrawer()}
       />
-      
-      <IconButton 
+
+      <IconButton
         icon="delete"
         iconColor="black"
         mode="contained"
@@ -62,33 +63,41 @@ export default function Profile({ navigation }) {
           uri: "https://www.forbesindia.com/media/wpower2020/Monika%20Shergill.jpg",
         }}
       />
-      <Text style={styles.text3}>Logged in Via  {userInfo.data.mobile_number}</Text>
+      <Text style={styles.text3}>
+        Logged in Via {userInfo.data.mobile_number}
+      </Text>
       <View style={styles.round1}>
-      <Text style={styles.text4}>Default Address</Text>
-      {shopinfo && shopinfo.results ? (
-    <Text style={styles.text5}>{shopinfo.results[0].shop_address}</Text>
-  ) : (
-    <Text>No vehicle information available</Text>
-  )}
+        <Text style={styles.text4}>Default Address</Text>
+        {shopinfo && shopinfo.results ? (
+          <Text style={styles.text5}>{shopinfo.results[0].shop_address}</Text>
+        ) : (
+          <Text>No vehicle information available</Text>
+        )}
       </View>
       <View style={styles.round2}>
-      <Text style={styles.text6}>Shop Details</Text>
-      
-      {shopinfo && shopinfo.results ? (
-    <><Text style={styles.text7}>{shopinfo.results[0].shop_name}</Text>
-    <Text style={styles.text9}>{shopinfo.results[0].shop_shortdescribtion} </Text> 
-    <Text style={styles.text10}>Shop GST: </Text>
-    <Text style={styles.text11}>1234567890!@#$% </Text>
-    <Text style={styles.text12}>Located In </Text>
-    <Text style={styles.text13}>{shopinfo.results[0].shop_address}</Text></>
-  ) : (
-    <Text>No vehicle information available</Text>
-  )}
+        <Text style={styles.text6}>Shop Details</Text>
+
+        {shopinfo && shopinfo.results ? (
+          <>
+            <Text style={styles.text7}>{shopinfo.results[0].shop_name}</Text>
+            <Text style={styles.text9}>
+              {shopinfo.results[0].shop_shortdescribtion}{" "}
+            </Text>
+            <Text style={styles.text10}>Shop GST: </Text>
+            <Text style={styles.text11}>1234567890!@#$% </Text>
+            <Text style={styles.text12}>Located In </Text>
+            <Text style={styles.text13}>
+              {shopinfo.results[0].shop_address}
+            </Text>
+          </>
+        ) : (
+          <Text>No vehicle information available</Text>
+        )}
       </View>
       <TouchableOpacity style={styles.Button} onPress={() => validation()}>
-            <Text style={styles.buttontext}>Delete Account</Text>
-          </TouchableOpacity>
-     </View>
+        <Text style={styles.buttontext}>Delete Account</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -107,23 +116,23 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
   },
-  text1:{
-    bottom:height/19,
-    right: width/3.1,
-    fontSize:21
+  text1: {
+    bottom: height / 19,
+    right: width / 3.1,
+    fontSize: 21,
   },
-  text2:{
-    bottom: height/18,
-    right: width/4,
-    fontSize:27,
-    fontWeight:"bold"
+  text2: {
+    bottom: height / 18,
+    right: width / 4,
+    fontSize: 27,
+    fontWeight: "bold",
   },
   Dprofilepic: {
     position: "absolute",
     width: 75,
     height: 75,
-    right: width/6.2,
-    top: height/10,
+    right: width / 6.2,
+    top: height / 10,
     borderRadius: 50,
   },
   delete: {
@@ -136,90 +145,87 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
   },
-  text3:{
-    bottom: height/18,
-    right: width/6.5,
-    fontSize:16,
+  text3: {
+    bottom: height / 18,
+    right: width / 6.5,
+    fontSize: 16,
   },
-  text4:{
-    top: height/48,
-    left: width/20,
-    fontSize:16,
-    fontWeight:"bold",
-    color:"grey",
-    
+  text4: {
+    top: height / 48,
+    left: width / 20,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "grey",
   },
-  text5:{
-    top: height/50,
-    left: width/20,
-    fontSize:16,
-    width:300,
+  text5: {
+    top: height / 50,
+    left: width / 20,
+    fontSize: 16,
+    width: 300,
   },
-  text6:{
-    top: height/85,
-    left: width/20,
-    fontSize:16,
-    fontWeight:"bold",
-    color:"grey"
+  text6: {
+    top: height / 85,
+    left: width / 20,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "grey",
   },
-  text7:{
-    top: height/100,
-    left: width/20,
-    fontSize:23,
-    fontWeight:"bold"
+  text7: {
+    top: height / 100,
+    left: width / 20,
+    fontSize: 23,
+    fontWeight: "bold",
   },
   rectangle: {
     width: 100 * 2,
     height: 100,
     backgroundColor: "white",
-    borderWidth:100
+    borderWidth: 100,
   },
-  text8:{
-    top: height/80,
-    left: width/20,
-    fontSize:18,
+  text8: {
+    top: height / 80,
+    left: width / 20,
+    fontSize: 18,
   },
-  text9:{
-    top: height/100,
-    left: width/20,
-    width:320
-    
+  text9: {
+    top: height / 100,
+    left: width / 20,
+    width: 320,
   },
-  text10:{
-    top: height/40,
-    left: width/20,
-    fontWeight:"bold",
-    fontSize:15,
+  text10: {
+    top: height / 40,
+    left: width / 20,
+    fontWeight: "bold",
+    fontSize: 15,
   },
-  text11:{
-    top: height/250,
-    left: width/5,
-    
+  text11: {
+    top: height / 250,
+    left: width / 5,
   },
-  text12:{
-    top: height/120,
-    left: width/22,
-    fontWeight:"bold",
-    fontSize:18,
+  text12: {
+    top: height / 120,
+    left: width / 22,
+    fontWeight: "bold",
+    fontSize: 18,
   },
-  text13:{
-    top: height/70,
-    left:width/22,
-    width:320,
+  text13: {
+    top: height / 70,
+    left: width / 22,
+    width: 320,
   },
   round1: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    bottom: height/30,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    bottom: height / 30,
     width: 350,
     height: 120,
     borderRadius: 20,
     borderWidth: 0.5,
   },
   round2: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    top: height/20,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    top: height / 20,
     width: 350,
     height: 200,
     borderRadius: 20,
@@ -234,9 +240,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: width / 1.2,
     height: width / 8,
-    top:height/10,
+    top: height / 10,
   },
-  buttontext:{
-    color:"white",
-  }
+  buttontext: {
+    color: "white",
+  },
 });
