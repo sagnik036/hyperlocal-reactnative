@@ -25,7 +25,9 @@ export default function Dhome({ navigation }) {
       <Text style={styles.Dname}>
         {userInfo.data.first_name} {userInfo.data.last_name}
       </Text>
-      <Text style={styles.Dcount}>Total 0 deliveries till now</Text>
+      <Text style={styles.Dcount}>Total 
+      <Text style={{fontWeight: '800'}}> {userInfo.data.jobs_count} </Text>
+       deliveries till now</Text>
       <View style={styles.Vtype}>
         <Text>4 wheeler</Text>
       </View>
