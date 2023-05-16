@@ -14,7 +14,7 @@ import axios from "axios";
 const { height, width } = Dimensions.get("window");
 
 export default function Profile({ navigation }) {
-  const { userInfo } = useContext(Authcontext);
+  const { userInfo, DeleteAcc } = useContext(Authcontext);
   const [shopinfo, setShopinfo] = useState(null);
   const shopid = userInfo.data.id;
   const shoptoken = userInfo.token.access;
@@ -33,6 +33,9 @@ export default function Profile({ navigation }) {
       .catch((err) => {
         console.log(err);
       });
+  };
+  const handleDeleteAccount = () => {
+    DeleteAcc();
   };
   useEffect(() => {
     apicall();
@@ -94,7 +97,10 @@ export default function Profile({ navigation }) {
           <Text>No Shop information available</Text>
         )}
       </View>
-      <TouchableOpacity style={styles.Button} onPress={() => validation()}>
+      <TouchableOpacity
+        style={styles.Button}
+        onPress={() => handleDeleteAccount()}
+      >
         <Text style={styles.buttontext}>Delete Account</Text>
       </TouchableOpacity>
     </View>
