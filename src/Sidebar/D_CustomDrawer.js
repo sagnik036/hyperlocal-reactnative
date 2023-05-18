@@ -7,7 +7,8 @@ import { Authcontext } from "../../api/Authcontext";
 const { height, width } = Dimensions.get("window");
 
 const D_CustomDrawer = (props) => {
-  const { logout } = useContext(Authcontext);
+  const { logout, userInfo } = useContext(Authcontext);
+  
     return (
       <View style={{flex:1}}>
       <DrawerContentScrollView {...props}
@@ -30,7 +31,7 @@ const D_CustomDrawer = (props) => {
             }}
           />
           <Text style={{ color: "#FCF5E5", fontSize: 18, fontWeight: "400" }}>
-            Kalpita
+          {userInfo.data.first_name}
           </Text>
         </ImageBackground>
 

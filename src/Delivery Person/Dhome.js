@@ -1,11 +1,52 @@
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
 import { Authcontext } from "../../api/Authcontext";
+import axios from 'axios';
+import { API_URl } from "@env";
+
 const { height, width } = Dimensions.get("window");
 
 export default function Dhome({ navigation }) {
   const { userInfo } = useContext(Authcontext);
+  const [cInfo,setcInfo]=useState(null)
+  const [wheelType,setwheelType]=useState(null)
+  const vToken= userInfo.token.access
+  const vId= userInfo.data.id 
+  const vType=()=>{
+    if (cInfo && cInfo.results) {
+      const wheel = cInfo.results[0].vehicle_type;
+      if (wheel == "TW") {
+        setwheelType("2");
+      } else if (wheel == "THW") {
+        setwheelType("3");
+      } else if (wheel == "FW") {
+        setwheelType("4");
+      } else {
+        setwheelType("other");
+      }
+    };
+  }
+  const vInfo =()=>{
+    axios.get(`${API_URl}/vehicledata/?search=${vId}`,
+    {
+      headers:{
+        Authorization:`Bearer ${vToken}`
+      }
+    }).then((res)=>{
+      //console.log(res.data)
+      let cInfo=res.data
+      setcInfo(cInfo)
+      //console.log(cInfo)
+    }).catch((err)=>{
+      //console.log(err)
+      alert("not found")
+    })
+  }
+  useEffect(()=>
+  {vInfo()},[])
+  useEffect(()=>
+  {vType()},[cInfo])
   return (
     <View style={styles.container}>
       <IconButton onPress={()=>navigation.openDrawer()}
@@ -29,7 +70,11 @@ export default function Dhome({ navigation }) {
       <Text style={{fontWeight: '800'}}> {userInfo.data.jobs_count} </Text>
        deliveries till now</Text>
       <View style={styles.Vtype}>
-        <Text>4 wheeler</Text>
+        {cInfo && cInfo.results ? (
+    <Text>{wheelType} wheeler</Text>
+  ) : (
+    <Text>No vehicle information available</Text>
+  )}
       </View>
 
       <Image
