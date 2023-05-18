@@ -61,23 +61,30 @@ export default function Dprofile({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <IconButton
-        onPress={() => navigation.openDrawer()}
-        icon="menu"
-        iconColor="black"
-        mode="contained"
-        size={30}
-        style={styles.menu}
-      />
-      <Text style={styles.Dtext}>Hey</Text>
-      <Text style={styles.Dname}>{userInfo.data.first_name}</Text>
-
-      <Image
+    <IconButton onPress={()=>navigation.openDrawer()}
+      icon="menu"
+      iconColor="black"
+      mode="contained"
+      size={30}
+      style={styles.menu}
+    />
+    <Text style={styles.Dtext}>Hey</Text>
+    <Text style={styles.Dname}>
+      {userInfo.data.first_name}
+    </Text>
+    
+    {cInfo.results[0]&&cInfo.results[0].user.profile_pic ? (<Image
         style={styles.Dprofilepic}
         source={{
-          uri: "https://www.forbesindia.com/media/wpower2020/Monika%20Shergill.jpg",
+          uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
         }}
-      />
+      />):(<Image
+        style={styles.Dprofilepic}
+        source={{
+          uri: cInfo.results[0].user.profile_pic,
+        }}
+      />)}
+    
 
       <IconButton
         icon="delete"
