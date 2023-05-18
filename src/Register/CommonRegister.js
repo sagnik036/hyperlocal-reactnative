@@ -30,6 +30,7 @@ export default function CommonRegister({ navigation, route }) {
   const [photoFront, SetPhotoFront] = useState(null);
   const [photoBack, SetPhotoBack] = useState(null);
   const [shopSelected, SetShopSelected] = useState("");
+  const [profilepic, SetProfilePic] = useState(null);
 
   const { CommonRegister, otptoken, isLoading, DeliveryAccess } =
     useContext(Authcontext);
@@ -70,15 +71,11 @@ export default function CommonRegister({ navigation, route }) {
 
   //if validation is true then it will naviagte to either proprietor or Delivery Person
   const handlenavigation = () => {
-    if (
-      DeliveryAccess !== null &&
-      selected === "PR" &&
-      shopSelected === "False"
-    ) {
+    if (selected === "PR" && shopSelected === "False") {
       navigation.navigate("login");
-    } else if (selected === "PR" && shopSelected === "True") {
+    } else if (shopSelected === "True") {
       navigation.navigate("ShopDetails");
-    } else if (DeliveryAccess !== null && selected === "DP") {
+    } else if (selected === "DP") {
       navigation.navigate("DeliveryRegister");
       //call the api
     } else {
@@ -120,6 +117,23 @@ export default function CommonRegister({ navigation, route }) {
     }
   };
 
+  //Profile pic
+  const ProfileAdd = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    //console.log(result);
+
+    if (!result.cancelled) {
+      SetProfilePic(result.uri);
+    }
+  };
+
   //If user type is Delievry Person then Upload all the details excluding is_Shop. Otherwise Send all the neccessary Details
   const Upload = async () => {
     const nameArray = Name.split(" ");
@@ -133,6 +147,14 @@ export default function CommonRegister({ navigation, route }) {
       formDataDelivery.append("mobile_number", "+91" + route.params.paramKey);
       formDataDelivery.append("first_name", first_name);
       formDataDelivery.append("last_name", last_name);
+      formDataDelivery.append("profile_pic", {
+        uri:
+          Platform.OS === "android"
+            ? profilepic
+            : profilepic.replace("file://", ""),
+        name: "profile.jpg",
+        type: "image/jpeg",
+      });
       formDataDelivery.append("token", otptoken);
       formDataDelivery.append("otp", OTP);
       formDataDelivery.append("adhar_photo_front", {
@@ -164,6 +186,14 @@ export default function CommonRegister({ navigation, route }) {
       formDataProprietor.append("is_shop", shopSelected);
       formDataProprietor.append("first_name", first_name);
       formDataProprietor.append("last_name", last_name);
+      formDataProprietor.append("profile_pic", {
+        uri:
+          Platform.OS === "android"
+            ? profilepic
+            : profilepic.replace("file://", ""),
+        name: "profile.jpg",
+        type: "image/jpeg",
+      });
       formDataProprietor.append("token", otptoken);
       formDataProprietor.append("otp", OTP);
       formDataProprietor.append("adhar_photo_front", {
@@ -280,7 +310,20 @@ export default function CommonRegister({ navigation, route }) {
             }
           />
         </View>
-        <View style={{ bottom: 15 }}>
+        <View style={{ bottom: 5 }}>
+          <Text style={styles.userType}>User Type</Text>
+          <View style={styles.dropdown}>
+            <SelectList
+              search={false}
+              maxHeight={100}
+              data={data}
+              save="key"
+              setSelected={(val) => setSelected(val)}
+            />
+          </View>
+        </View>
+
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Text style={styles.ShopChoice}>Do you Have a Shop?</Text>
           {selected === "" || selected === "DP" ? (
             <RadioButton.Group
@@ -290,7 +333,7 @@ export default function CommonRegister({ navigation, route }) {
               <View
                 style={{
                   alignItems: "center",
-                  top: width / 7.5,
+                  top: width / 12,
                   left: width / 6,
                 }}
               >
@@ -304,7 +347,7 @@ export default function CommonRegister({ navigation, route }) {
               <View
                 style={{
                   alignItems: "center",
-                  top: width / 10.5,
+                  top: width / 18,
                   left: width / 6,
                 }}
               >
@@ -324,7 +367,7 @@ export default function CommonRegister({ navigation, route }) {
               <View
                 style={{
                   alignItems: "center",
-                  top: width / 7.5,
+                  top: width / 12,
                   left: width / 6,
                 }}
               >
@@ -338,7 +381,7 @@ export default function CommonRegister({ navigation, route }) {
               <View
                 style={{
                   alignItems: "center",
-                  top: width / 10.5,
+                  top: width / 18,
                   left: width / 6,
                 }}
               >
@@ -351,18 +394,14 @@ export default function CommonRegister({ navigation, route }) {
               </View>
             </RadioButton.Group>
           )}
-        </View>
-        <Text style={styles.userType}>User Type</Text>
-        <View style={styles.dropdown}>
-          <SelectList
-            search={false}
-            maxHeight={100}
-            data={data}
-            save="key"
-            setSelected={(val) => setSelected(val)}
-          />
-        </View>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View>
+            <TouchableOpacity
+              style={styles.Profile}
+              onPress={() => ProfileAdd()}
+            >
+              <Text style={{ color: "white" }}>Add a Profile Picture</Text>
+            </TouchableOpacity>
+          </View>
           <View
             style={{
               backgroundColor: "white",
@@ -500,9 +539,20 @@ const styles = StyleSheet.create({
     left: width / 2,
   },
   ShopChoice: {
-    left: width / 12,
+    right: height / 9,
     top: width / 4,
     fontSize: 16,
     fontWeight: "400",
+  },
+  Profile: {
+    borderRadius: 12,
+    backgroundColor: "red",
+    padding: 10,
+    margin: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    width: width / 1.3,
+    height: width / 8,
+    top: width / 10,
   },
 });
