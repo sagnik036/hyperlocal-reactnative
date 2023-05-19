@@ -17,7 +17,7 @@ export default function Login({ navigation }) {
   const [pass, setPass] = useState("");
   const [isSecureEntry, isSetSecureEntry] = useState(true);
   const { isLoading, login } = useContext(Authcontext);
- 
+
   return (
     <View style={styles.container}>
       <Spinner color="red" visible={isLoading} />
@@ -27,7 +27,7 @@ export default function Login({ navigation }) {
         style={styles.input1}
         mode="outlined"
         outlineColor="red"
-        theme={{roundness:20}}
+        theme={{ roundness: 20 }}
         keyboardType="default"
         placeholder="Mobile Number"
         value={username}
@@ -40,7 +40,7 @@ export default function Login({ navigation }) {
         style={styles.input2}
         outlineColor="red"
         mode="outlined"
-        theme={{roundness:20}}
+        theme={{ roundness: 20 }}
         secureTextEntry={isSecureEntry}
         keyboardType="default"
         placeholder="Enter Password"
@@ -48,18 +48,18 @@ export default function Login({ navigation }) {
         value={pass}
         onChangeText={(value) => setPass(value)}
         right={
-          <TextInput.Icon 
-            icon={isSecureEntry? "eye" : "eye-off"}
+          <TextInput.Icon
+            icon={isSecureEntry ? "eye" : "eye-off"}
             onPress={() => isSetSecureEntry(!isSecureEntry)}
           />
         }
       />
       <TouchableOpacity
-          style={styles.nextBtn2}
-          onPress={() => Requestotp (mobilenumber, otp)}
-        >
-          <Text style={styles.nextStyle}>Request OTP</Text>
-        </TouchableOpacity>
+        style={styles.nextBtn2}
+        onPress={() => Requestotp(mobilenumber, otp)}
+      >
+        <Text style={styles.nextStyle}>Request OTP</Text>
+      </TouchableOpacity>
       {username == "" || pass == "" ? (
         <TouchableOpacity style={styles.nextBtndisable} disabled={true}>
           <Text style={styles.nextStyle}>LOGIN</Text>
@@ -75,28 +75,24 @@ export default function Login({ navigation }) {
 
       <Text style={styles.text7}>Or</Text>
       <Text style={styles.text3}>
-        <Text 
-        onPress={() => navigation.navigate("forgetpass")}
-        style={styles.underlineTextStyle1}>Forgot Password</Text>
-      </Text>
-      <Text style={styles.text8}>Or</Text>
-      <TouchableOpacity
-          style={styles.nextBtn3}  
+        <Text
+          onPress={() => navigation.navigate("forgetpass")}
+          style={styles.underlineTextStyle1}
         >
-          <Text style={styles.nextStyle}>Login with Google</Text>
-        </TouchableOpacity>
+          Forgot Password
+        </Text>
+      </Text>
+
       <Text style={styles.text4}>
-        Don't have an account? {" "}
+        Don't have an account?{" "}
         <Text
           onPress={() => navigation.navigate("1")}
           style={styles.underlineTextStyle1}
         >
           Signup
         </Text>
-        
       </Text>
-    
-   </View>
+    </View>
   );
 }
 
@@ -113,19 +109,19 @@ const styles = StyleSheet.create({
     width: 280,
     height: 50,
     margin: 10,
-    top:-50,
+    top: -50,
   },
   input2: {
     backgroundColor: "white",
     padding: 10,
     width: 280,
     height: 50,
-    top:-50,
+    top: -50,
     margin: 10,
   },
   nextBtn1: {
     borderRadius: 20,
-    borderColor:"red",
+    borderColor: "red",
     backgroundColor: "red",
     padding: 10,
     margin: 8,
@@ -134,9 +130,9 @@ const styles = StyleSheet.create({
     height: 60,
     bottom: -30,
   },
-  nextBtn2:{
+  nextBtn2: {
     borderRadius: 20,
-    borderColor:"red",
+    borderColor: "red",
     backgroundColor: "red",
     padding: 10,
     margin: 8,
@@ -149,7 +145,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     top: -225,
     textAlign: "center",
-    right:-80
+    right: -80,
   },
   underlineTextStyle1: {
     color: "#EE4E4E",
@@ -165,16 +161,16 @@ const styles = StyleSheet.create({
   text2: {
     color: "red",
     fontSize: 25,
-    fontWeight:"bold",
+    fontWeight: "bold",
     fontFamily: "Roboto",
-    bottom: 60
+    bottom: 60,
   },
   text4: {
     fontSize: 13,
-    top: 70,
+    top: 120,
     flexDirection: "column",
     width: width / 1.2,
-    right:-100
+    right: -100,
   },
   nextBtndisable: {
     borderRadius: 20,
@@ -186,21 +182,21 @@ const styles = StyleSheet.create({
     height: 60,
     bottom: -30,
   },
-  text5:{
-    right:100,
-    top:-50
+  text5: {
+    right: 100,
+    top: -50,
   },
-  text8:{
-    top:10,
-    fontSize:20
+  text8: {
+    top: 10,
+    fontSize: 20,
   },
-  text7:{
-    top:-180,
-    fontSize:20
+  text7: {
+    top: -180,
+    fontSize: 20,
   },
-  nextBtn3:{
+  nextBtn3: {
     borderRadius: 20,
-    borderColor:"red",
+    borderColor: "red",
     backgroundColor: "red",
     padding: 10,
     margin: 8,
