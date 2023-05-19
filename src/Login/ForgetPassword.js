@@ -19,7 +19,7 @@ export default function ForgetPassword({ navigation }) {
     if (mobile === "") {
       Seterror("Enter Mobile number");
     } else {
-      navigation.navigate("CommonRegister", { paramKey: mobile });
+      navigation.navigate("resetpass");
       mobilenum(mobile);
       GetOtp(mobile);
     }
@@ -40,7 +40,7 @@ export default function ForgetPassword({ navigation }) {
           outlineColor="red"
           style={styles.mobileinput}
         />
-        <TouchableOpacity style={styles.Button} onPress={() => validation}>
+        <TouchableOpacity style={styles.Button} onPress={() => validation()}>
           <Text style={styles.ButtonText}>Send OTP</Text>
         </TouchableOpacity>
       </View>
