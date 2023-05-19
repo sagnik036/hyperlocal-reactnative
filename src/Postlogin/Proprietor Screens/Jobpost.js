@@ -12,7 +12,7 @@ import {
   Button,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
-//import { Calendar } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 // /import { showDatePicker, DateTimePickerModal, handleConfirm, hideDatePicker } from "@react-native-community/datetimepicker";/
@@ -57,16 +57,11 @@ export default function Jobpost() {
   const [quantity, SetQuantity] = useState(null);
   const [pickupname, SetpickupName] = useState(null);
   const [pickupphone, SetpickupPhone] = useState(null);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate1, setSelectedDate1] = useState(null);
 
-  const handleDateConfirm = (event, date) => {
-    if (date) {
-      setSelectedDate1(date);
-      setDatePickerVisibility(false);
-    }
+  const handleDayPress = (date) => {
+    setSelectedDate(date);
+    setShowModal(false);
   };
-
   const togglePicker = () => {
     setShowPicker(!showPicker);
   };
@@ -143,28 +138,29 @@ export default function Jobpost() {
       });
   };
 
-  const handlepost = () => {
-    console.log(productname);
-    console.log(photoFront, photoBack);
-    console.log(jobtitle);
-    console.log(jobDesc);
-    console.log(quantity);
-    console.log(pickupname);
-    console.log(pickupphone);
-    console.log(lat, longitude);
-    console.log(latDel, longitudeDel);
-    console.log(selectedTime.toLocaleDateString());
-    console.log(selected);
-    console.log(selectedproduct);
-    console.log(name);
-    console.log(Phone);
-  };
+  // const handlepost = () => {
+  //   console.log(productname);
+  //   console.log(photoFront, photoBack);
+  //   console.log(jobtitle);
+  //   console.log(jobDesc);
+  //   console.log(quantity);
+  //   console.log(pickupname);
+  //   console.log(pickupphone);
+  //   console.log(lat, longitude);
+  //   console.log(latDel, longitudeDel);
+  //   console.log(selectedDate.dateString);
+  //   console.log(selectedTime.toLocaleTimeString());
+  //   console.log(selectedproduct);
+  //   console.log(name);
+  //   console.log(Phone);
+  // };
 
-  const SubmitJobPost = (lat, latDel, longitude, longitudeDel) => {
+  const SubmitJobPost = (lat, latDel, longitude, longitudeDel, date, time) => {
     const bearertoken = userInfo.token.access;
     const formData = new FormData();
     const pickupPoint = `POINT(${lat},${longitude})`;
     const deliveryPoint = `POINT(${latDel},${longitudeDel})`;
+    const dateTime = `${date} ${time}`;
     formData.append("name", productname);
     formData.append("description", jobDesc);
     formData.append("category", selectedproduct);
@@ -195,6 +191,7 @@ export default function Jobpost() {
     formData.append("delivery_contact_address", Phone);
     formData.append("preferred_vehicle_type", selected);
     formData.append("title", jobtitle);
+    formData.append("expected_delivery_datetime");
 
     axios
       .post(`${API_URL}/live-jobs/`, formData, {
@@ -328,7 +325,7 @@ export default function Jobpost() {
           </View>
 
           <TouchableOpacity
-            onPress={() => setDatePickerVisibility(true)}
+            onPress={() => setShowModal(true)}
             style={styles.Button2}
           >
             <Text
@@ -338,17 +335,8 @@ export default function Jobpost() {
               Select Date
             </Text>
           </TouchableOpacity>
-          {isDatePickerVisible && (
-            <DateTimePicker
-              value={selectedDate1 || new Date()}
-              mode="date"
-              is24Hour={false}
-              display="default"
-              onChange={handleDateConfirm}
-            />
-          )}
 
-          {/* <Modal visible={showModal} animationType="slide" transparent={true}>
+          <Modal visible={showModal} animationType="slide" transparent={true}>
             <Calendar
               onDayPress={handleDayPress}
               style={{
@@ -358,7 +346,7 @@ export default function Jobpost() {
                 top: 200,
               }}
             />
-          </Modal> */}
+          </Modal>
 
           <View style={styles.dropdown2}>
             <Text style={{ top: 35, height: 17, right: 95 }}>Vehicle</Text>
@@ -520,7 +508,7 @@ const styles = StyleSheet.create({
     //padding: 5,
   },
   dropdown2: {
-    top: -150,
+    top: -180,
     right: -100,
     width: 120,
   },
@@ -564,7 +552,7 @@ const styles = StyleSheet.create({
     padding: 15,
     height: 50,
     width: 120,
-    top: -205,
+    top: -195,
     left: 100,
     alignItems: "center",
     justifyContent: "center",
@@ -576,7 +564,7 @@ const styles = StyleSheet.create({
     padding: 15,
     height: 50,
     width: 120,
-    top: -45,
+    top: -10,
     left: -40,
     alignItems: "center",
     justifyContent: "center",
