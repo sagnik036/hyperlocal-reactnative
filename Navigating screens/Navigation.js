@@ -17,6 +17,8 @@ import Shopdetails from "../src/Register/Proprietor/Shopdetails";
 import Livelocation from "../src/Register/Proprietor/Livelocation";
 import JobDetails from "../src/Postlogin/Delivery Person Screens/JobDetails";
 
+
+
 export default function Navigation() {
   const Stack = createNativeStackNavigator();
   const { userToken, userInfo } = useContext(Authcontext);
@@ -99,6 +101,7 @@ export default function Navigation() {
           component={JobDetails}
           options={{ headerShown: false }}
         />
+         
       </Stack.Navigator>
     </NavigationContainer>
   );

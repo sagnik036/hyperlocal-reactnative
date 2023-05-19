@@ -11,7 +11,8 @@ import Lang from "../Postlogin/Delivery Person Screens/Lang";
 import Setting from "../Postlogin/Delivery Person Screens/Setting";
 import Helep from "../Postlogin/Delivery Person Screens/Helep";
 import Dprofile from "../Postlogin/Delivery Person Screens/Dprofile";
-
+import { Octicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const D_Sidebar = () => {
 
@@ -53,29 +54,29 @@ const D_Sidebar = () => {
         }}
         />
          <Drawer.Screen 
+        name="Verify your Pickup" 
+        component={Setting}
+        options={{
+        drawerIcon: ({ color }) => (
+          <Octicons name="verified" size={20} color="black" />
+          ),
+        }}
+        />
+         <Drawer.Screen 
+        name="Verify Your Delivery" 
+        component={Lang}
+        options={{
+        drawerIcon: ({ color }) => (
+          <MaterialIcons name="verified-user" size={20} color="black" />
+          ),
+        }}
+        />
+         <Drawer.Screen 
         name="My Deliveries" 
         component={Deliveries}
         options={{
         drawerIcon: ({ color }) => (
-            <FontAwesome name="cubes" size={20} color={color} />
-          ),
-        }}
-        />
-         <Drawer.Screen 
-        name="Change Language" 
-        component={Lang}
-        options={{
-        drawerIcon: ({ color }) => (
-            <FontAwesome name="language" size={20} color={color} />
-          ),
-        }}
-        />
-         <Drawer.Screen 
-        name="Settings" 
-        component={Setting}
-        options={{
-        drawerIcon: ({ color }) => (
-            <Feather name="settings" size={20} color={color} />
+          <FontAwesome name="cubes" size={18} color="black" />
           ),
         }}
         />

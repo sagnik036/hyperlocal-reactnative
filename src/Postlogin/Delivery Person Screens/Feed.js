@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { IconButton } from 'react-native-paper'
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { API_URl } from "@env";
 import axios from 'axios';
 import { Authcontext } from '../../../api/Authcontext';
@@ -82,7 +81,7 @@ export default function Feed({navigation}) {
             }}
             onPress={()=>navigation.navigate("Delivery Details",{paramKey:item.job_id})}
             >
-              <Text
+            <Text
               style={{
                 textAlign: "center",
                 color: "white",

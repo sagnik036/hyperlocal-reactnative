@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet, Image, Dimensions, Linking } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, Linking, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { API_URl } from "@env";
 import axios from "axios";
 import { Authcontext } from "../../../api/Authcontext";
@@ -36,6 +35,19 @@ export default function JobDetails({ route }) {
     const hours = parts[0].split(" ")[0];
     const minutes = parts[1].split(" ")[0];
     return `${hours} hours and ${minutes} mins`;
+  }
+  const acceptjob = () => {
+    axios.post(`${API_URl}/job-accept/`,{
+      job_id: route.params.paramKey
+    }, {
+      headers: {
+        Authorization: `Bearer ${jobtoken}`
+      },
+    }) .then((res)=>{
+      alert("YoU Have Accepted The Job, Go To Home Screen For More Details")
+    }) .catch((err) =>{
+      alert("This Job Has Been Accepted Already")
+    })
   }
   return (
     <View style={styles.container}>
@@ -136,7 +148,8 @@ export default function JobDetails({ route }) {
           left: 10,
           top: 50,
         }}
-      >
+        onPress={() => openGoogleMaps(data.data.delivery_location.coordinates[1], data.data.delivery_location.coordinates[0])}
+      > 
         <Text
           style={{
             textAlign: "center",
@@ -162,6 +175,8 @@ export default function JobDetails({ route }) {
           left: 10,
           top: 50,
         }}
+        onPress={() => acceptjob() }
+        
       >
         <Text
           style={{
