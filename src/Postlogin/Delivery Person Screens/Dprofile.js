@@ -17,7 +17,7 @@ export default function Dprofile({ navigation }) {
   const vToken = userInfo.token.access;
   const vId = userInfo.data.id;
   const vType = () => {
-    if (cInfo && cInfo.results) {
+    if (cInfo && cInfo.results && cInfo.results.length > 0) {
       const wheel = cInfo.results[0].vehicle_type;
       if (wheel == "TW") {
         setwheelType("2");
@@ -45,7 +45,7 @@ export default function Dprofile({ navigation }) {
         //console.log(res.data)
         let cInfo = res.data;
         setcInfo(cInfo);
-        console.log(cInfo);
+        console.log(cInfo.results[0].user.profile_pic);
       })
       .catch((err) => {
         //console.log(err)
@@ -73,17 +73,19 @@ export default function Dprofile({ navigation }) {
       {userInfo.data.first_name}
     </Text>
     
-    {cInfo.results[0]&&cInfo.results[0].user.profile_pic ? (<Image
-        style={styles.Dprofilepic}
-        source={{
-          uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
-        }}
-      />):(<Image
-        style={styles.Dprofilepic}
-        source={{
-          uri: cInfo.results[0].user.profile_pic,
-        }}
-      />)}
+    {cInfo && cInfo.results && cInfo.results[0] && cInfo.results[0].user && cInfo.results[0].user.profile_pic ? (
+  <Image
+    style={styles.Dprofilepic}
+    source={{ uri: cInfo.results[0].user.profile_pic }}
+  />
+) : (
+  <Image
+    style={styles.Dprofilepic}
+    source={{
+      uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
+    }}
+  />
+)}
     
 
       <IconButton
@@ -112,7 +114,7 @@ export default function Dprofile({ navigation }) {
 
       <View style={styles.roundedrect2}>
         <Text style={styles.Vdetails}>Vehicle Details</Text>
-        {cInfo && cInfo.results ? (
+        {cInfo && cInfo.results && cInfo.results.length > 0 ? (
           <>
             <Text style={styles.Vmodel}>{cInfo.results[0].vehicle_name}</Text>
             <Text style={styles.wheel}>{wheelType} wheeler</Text>

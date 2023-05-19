@@ -14,7 +14,7 @@ export default function Dhome({ navigation }) {
   const vToken= userInfo.token.access
   const vId= userInfo.data.id 
   const vType=()=>{
-    if (cInfo && cInfo.results) {
+    if (cInfo && cInfo.results && cInfo.results.length > 0) {
       const wheel = cInfo.results[0].vehicle_type;
       if (wheel == "TW") {
         setwheelType("2");
@@ -73,7 +73,7 @@ export default function Dhome({ navigation }) {
         {cInfo && cInfo.results ? (
     <Text>{wheelType} wheeler</Text>
   ) : (
-    <Text>No vehicle information available</Text>
+    <Text>No Info</Text>
   )}
       </View>
 

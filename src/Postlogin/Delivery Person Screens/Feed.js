@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Image } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { IconButton } from 'react-native-paper'
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { API_URl } from "@env";
 import axios from 'axios';
 import { Authcontext } from '../../../api/Authcontext';
@@ -11,14 +12,13 @@ export default function Feed({navigation}) {
 
   const { userInfo } = useContext(Authcontext);
   const [data, setData] = useState([]);
-
   const token = userInfo.token.access 
   const feedapicall = () => {
     axios.get(`${API_URl}/live-jobs/`,{headers:{
       Authorization:`Bearer ${token}`
     }}) .then((res) =>{
-      console.log (res.data.results[0].job_id)
-      setData ([res.data.results[0]])
+      console.log (res.data.results)
+      setData (res.data.results)
     }) .catch((err) =>{
       console.log (err)
     })
@@ -28,6 +28,12 @@ export default function Feed({navigation}) {
     feedapicall()
   }, [])
 
+  function getFormattedDuration(duration) {
+    const parts = duration.split(", ");
+    const hours = parts[0].split(" ")[0];
+    const minutes = parts[1].split(" ")[0];
+    return `${hours} hours and ${minutes} mins`;
+  }
 
 
   return (
@@ -39,19 +45,57 @@ export default function Feed({navigation}) {
         size={30}
         style={styles.menu}
       />
-      <View style={{width:"100%", marginTop:50}}>
-      <FlatList 
-      data={data}
-      keyExtractor={(item)=>item.job_id}
-      renderItem={({item,index})=>
-      <View>
-        <Text>{item.id}</Text>
-        <Text>{item.estimated_duration}</Text>
-        <Text>{item.pickup_contact_name}</Text>
-      </View>}
-      />
+      {
+        data?(<View style={styles.flatlistc}>
+          <FlatList 
+          data={data}
+          keyExtractor={(item)=>item.id}
+          renderItem={({item,index})=>
+          <View style= {{
+            marginBottom: 20,
+            borderWidth: 1,
+            width: 350,
+          }}>
+            <Image
+            style={styles.product}
+            source={{
+              uri: item.photo_1,
+            }}
+            />
+            <Text style={{fontSize:20, fontWeight: '600', left:10,}}>Deliverable : {item.name}</Text>
+            <Text style={{fontSize:15, left:10}}>Shop name: {item.shop_data ? item.shop_data.shop_name : 'No Shop'}</Text>
+            {/* <Text>Owner: {item.shop_data.user.first_name} {item.shop_data.user.last_name}</Text> */}
+            <Text style={{fontSize:15, left:10}}>Item Quantity: {item.quantity}</Text>
+            <Text style={{fontSize:15, left:10}}>Delivery Distance: {item.delivery_distance}km</Text>
+            <Text style={{fontSize:15, left:10, width: 200,}}>Estimated Duration: {getFormattedDuration(item.estimated_duration)}</Text>
+            <TouchableOpacity
+            style={{
+              justifyContent: "center",
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor: "#F02121",
+                height: 45,
+                width: 100,
+                marginTop: 5,
+                marginBottom: 5,
+                left:10,
+            }}
+            onPress={()=>navigation.navigate("Delivery Details",{paramKey:item.job_id})}
+            >
+              <Text
+              style={{
+                textAlign: "center",
+                color: "white",
+                fontWeight: "500",
+                }}>
+                  Job Details
+                  </Text>
+            </TouchableOpacity>
+          </View>}
+          />
+          </View>):(<Text>No job available right now</Text>)
+      }
       </View>
-    </View>
   )
 }
 
@@ -68,5 +112,18 @@ const styles = StyleSheet.create({
       backgroundColor: "#fff",
       alignItems: "center",
       justifyContent: "center",
+    },
+    flatlistc: {
+      width: "100%",
+      bottom: width/3,
+      left: width/10,
+    },
+    product: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    right: 25,
+    top: 45,
+    resizeMode: 'contain',
     },
 })

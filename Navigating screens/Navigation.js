@@ -15,6 +15,7 @@ import DRegister from "../src/Register/DeliveryPerson/DRegister";
 import ResetPassword from "../src/Login/ResetPassword";
 import Shopdetails from "../src/Register/Proprietor/Shopdetails";
 import Livelocation from "../src/Register/Proprietor/Livelocation";
+import JobDetails from "../src/Postlogin/Delivery Person Screens/JobDetails";
 
 export default function Navigation() {
   const Stack = createNativeStackNavigator();
@@ -92,6 +93,11 @@ export default function Navigation() {
           name="Job Details"
           component={Jobpost}
           options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Delivery Details"
+          component={JobDetails}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
