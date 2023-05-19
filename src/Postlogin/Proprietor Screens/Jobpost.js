@@ -16,10 +16,11 @@ import { SelectList } from "react-native-dropdown-select-list";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 // /import { showDatePicker, DateTimePickerModal, handleConfirm, hideDatePicker } from "@react-native-community/datetimepicker";/
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as Location from "expo-location";
 import axios from "axios";
 import { API_TOKEN, API_URL } from "@env";
+import { Authcontext } from "../../../api/Authcontext";
 
 export default function Jobpost() {
   const { userInfo } = useContext(Authcontext);
@@ -56,11 +57,16 @@ export default function Jobpost() {
   const [quantity, SetQuantity] = useState(null);
   const [pickupname, SetpickupName] = useState(null);
   const [pickupphone, SetpickupPhone] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate1, setSelectedDate1] = useState(null);
 
-  // const handleDayPress = (date) => {
-  //   setSelectedDate(date);
-  //   setShowModal(false);
-  // };
+  const handleDateConfirm = (event, date) => {
+    if (date) {
+      setSelectedDate1(date);
+      setDatePickerVisibility(false);
+    }
+  };
+
   const togglePicker = () => {
     setShowPicker(!showPicker);
   };
@@ -137,22 +143,22 @@ export default function Jobpost() {
       });
   };
 
-  // const handlepost = () => {
-  //   console.log(productname);
-  //   console.log(photoFront, photoBack);
-  //   console.log(jobtitle);
-  //   console.log(jobDesc);
-  //   console.log(quantity);
-  //   console.log(pickupname);
-  //   console.log(pickupphone);
-  //   console.log(lat, longitude);
-  //   console.log(latDel, longitudeDel);
-  //   console.log(selectedTime);
-  //   console.log(selected);
-  //   console.log(selectedproduct);
-  //   console.log(name);
-  //   console.log(Phone);
-  // };
+  const handlepost = () => {
+    console.log(productname);
+    console.log(photoFront, photoBack);
+    console.log(jobtitle);
+    console.log(jobDesc);
+    console.log(quantity);
+    console.log(pickupname);
+    console.log(pickupphone);
+    console.log(lat, longitude);
+    console.log(latDel, longitudeDel);
+    console.log(selectedTime.toLocaleDateString());
+    console.log(selected);
+    console.log(selectedproduct);
+    console.log(name);
+    console.log(Phone);
+  };
 
   const SubmitJobPost = (lat, latDel, longitude, longitudeDel) => {
     const bearertoken = userInfo.token.access;
@@ -321,8 +327,8 @@ export default function Jobpost() {
             )}
           </View>
 
-          {/* <TouchableOpacity
-            onPress={() => setShowModal(true)}
+          <TouchableOpacity
+            onPress={() => setDatePickerVisibility(true)}
             style={styles.Button2}
           >
             <Text
@@ -332,8 +338,17 @@ export default function Jobpost() {
               Select Date
             </Text>
           </TouchableOpacity>
+          {isDatePickerVisible && (
+            <DateTimePicker
+              value={selectedDate1 || new Date()}
+              mode="date"
+              is24Hour={false}
+              display="default"
+              onChange={handleDateConfirm}
+            />
+          )}
 
-          <Modal visible={showModal} animationType="slide" transparent={true}>
+          {/* <Modal visible={showModal} animationType="slide" transparent={true}>
             <Calendar
               onDayPress={handleDayPress}
               style={{
