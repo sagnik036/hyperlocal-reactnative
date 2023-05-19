@@ -12,14 +12,15 @@ import {
   Button,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
-//import { Calendar } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 // /import { showDatePicker, DateTimePickerModal, handleConfirm, hideDatePicker } from "@react-native-community/datetimepicker";/
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as Location from "expo-location";
 import axios from "axios";
 import { API_TOKEN, API_URL } from "@env";
+import { Authcontext } from "../../../api/Authcontext";
 
 export default function Jobpost() {
   const { userInfo } = useContext(Authcontext);
@@ -57,10 +58,10 @@ export default function Jobpost() {
   const [pickupname, SetpickupName] = useState(null);
   const [pickupphone, SetpickupPhone] = useState(null);
 
-  // const handleDayPress = (date) => {
-  //   setSelectedDate(date);
-  //   setShowModal(false);
-  // };
+  const handleDayPress = (date) => {
+    setSelectedDate(date);
+    setShowModal(false);
+  };
   const togglePicker = () => {
     setShowPicker(!showPicker);
   };
@@ -147,18 +148,19 @@ export default function Jobpost() {
   //   console.log(pickupphone);
   //   console.log(lat, longitude);
   //   console.log(latDel, longitudeDel);
-  //   console.log(selectedTime);
-  //   console.log(selected);
+  //   console.log(selectedDate.dateString);
+  //   console.log(selectedTime.toLocaleTimeString());
   //   console.log(selectedproduct);
   //   console.log(name);
   //   console.log(Phone);
   // };
 
-  const SubmitJobPost = (lat, latDel, longitude, longitudeDel) => {
+  const SubmitJobPost = (lat, latDel, longitude, longitudeDel, date, time) => {
     const bearertoken = userInfo.token.access;
     const formData = new FormData();
     const pickupPoint = `POINT(${lat},${longitude})`;
     const deliveryPoint = `POINT(${latDel},${longitudeDel})`;
+    const dateTime = `${date} ${time}`;
     formData.append("name", productname);
     formData.append("description", jobDesc);
     formData.append("category", selectedproduct);
@@ -189,6 +191,7 @@ export default function Jobpost() {
     formData.append("delivery_contact_address", Phone);
     formData.append("preferred_vehicle_type", selected);
     formData.append("title", jobtitle);
+    formData.append("expected_delivery_datetime");
 
     axios
       .post(`${API_URL}/live-jobs/`, formData, {
@@ -321,7 +324,7 @@ export default function Jobpost() {
             )}
           </View>
 
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => setShowModal(true)}
             style={styles.Button2}
           >
@@ -343,7 +346,7 @@ export default function Jobpost() {
                 top: 200,
               }}
             />
-          </Modal> */}
+          </Modal>
 
           <View style={styles.dropdown2}>
             <Text style={{ top: 35, height: 17, right: 95 }}>Vehicle</Text>
@@ -505,7 +508,7 @@ const styles = StyleSheet.create({
     //padding: 5,
   },
   dropdown2: {
-    top: -150,
+    top: -180,
     right: -100,
     width: 120,
   },
@@ -549,7 +552,7 @@ const styles = StyleSheet.create({
     padding: 15,
     height: 50,
     width: 120,
-    top: -205,
+    top: -195,
     left: 100,
     alignItems: "center",
     justifyContent: "center",
@@ -561,7 +564,7 @@ const styles = StyleSheet.create({
     padding: 15,
     height: 50,
     width: 120,
-    top: -45,
+    top: -10,
     left: -40,
     alignItems: "center",
     justifyContent: "center",
