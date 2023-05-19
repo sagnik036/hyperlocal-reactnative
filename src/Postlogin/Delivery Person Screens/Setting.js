@@ -1,16 +1,23 @@
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
-import React, { useContext, useState } from 'react'
-import { IconButton, TextInput } from 'react-native-paper'
-import { Authcontext } from '../../../api/Authcontext';
-import Spinner from 'react-native-loading-spinner-overlay/lib';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import React, { useContext, useState } from "react";
+import { IconButton, TextInput } from "react-native-paper";
+import { Authcontext } from "../../../api/Authcontext";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 
 const { height, width } = Dimensions.get("window");
 
-export default function Setting({navigation}) {
+export default function Setting({ navigation }) {
   const [Error, Seterror] = useState("");
   const [mobile, SetMobile] = useState("");
   const [otp, setOtp] = useState("");
-  const { isLoading, GetOtp, mobilenum } = useContext(Authcontext);
+  const { isLoading, GetOtp, mobilenum, ValidatePickup } =
+    useContext(Authcontext);
 
   const validation = () => {
     if (isNaN(mobile)) {
@@ -21,22 +28,27 @@ export default function Setting({navigation}) {
       Seterror("Enter 10 Digit Mobile Number");
     } else {
       mobilenum(mobile);
-      //GetOtp(mobile);
+      //console.log(jobid);
+      GetOtp(mobile);
     }
+  };
+
+  const pickupvalidate = (otp) => {
+    ValidatePickup(otp);
   };
   return (
     <View style={styles.container}>
-    <IconButton onPress={()=>navigation.openDrawer()}
-      icon="menu"
-      iconColor="black"
-      mode="contained"
-      size={30}
-      style={styles.menu}
-    />
-    <Spinner color="red" visible={isLoading} />
+      <IconButton
+        onPress={() => navigation.openDrawer()}
+        icon="menu"
+        iconColor="black"
+        mode="contained"
+        size={30}
+        style={styles.menu}
+      />
+      <Spinner color="red" visible={isLoading} />
       <Text style={styles.login}>Check Your Pickup Here</Text>
       <View style={styles.content}>
-      
         <TextInput
           placeholder="Put Your Mobile Number"
           mode="outlined"
@@ -57,34 +69,37 @@ export default function Setting({navigation}) {
           placeholder="Put Your OTP"
           mode="outlined"
           theme={{ roundness: 10 }}
-          value={mobile}
+          value={otp}
           onChangeText={(value) => setOtp(value)}
           activeOutlineColor="red"
           outlineColor="red"
           style={styles.otpinput}
         />
 
-        <TouchableOpacity style={styles.Button2} onPress={() => validation()}>
+        <TouchableOpacity
+          style={styles.Button2}
+          onPress={() => pickupvalidate(otp)}
+        >
           <Text style={styles.ButtonText2}>Check OTP</Text>
         </TouchableOpacity>
-  </View>
-  </View>
-)
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  menu:{
+  menu: {
     position: "absolute",
     alignItems: "center",
     backgroundColor: "white",
-    left: width/25,
-    top: height/40,
+    left: width / 25,
+    top: height / 40,
   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-   // justifyContent: "center",
+    // justifyContent: "center",
   },
   login: {
     //width: 97,
@@ -103,13 +118,13 @@ const styles = StyleSheet.create({
     width: width / 1.3,
     backgroundColor: "white",
     elevation: 50,
-    top: height/3,
+    top: height / 3,
   },
   otpinput: {
     width: width / 1.3,
     backgroundColor: "white",
     elevation: 50,
-    top: height/2
+    top: height / 2,
   },
   mobileText: {
     fontWeight: "400",
@@ -156,4 +171,4 @@ const styles = StyleSheet.create({
     top: width / 7,
     height: width / 7,
   },
-})
+});

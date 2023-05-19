@@ -14,11 +14,17 @@ export const AuthProvider = ({ children, navigation }) => {
   const [DeliveryAccess, setDeliveryAccess] = useState(null);
   const [user, SetUser] = useState(null);
   const [mobile, Setmobile] = useState("");
+  const [data, setData] = useState([]);
+  const [jobid, SetJobId] = useState(null);
 
   //Taking the mobile number from the user
   const mobilenum = (mobile) => {
     Setmobile(mobile);
     //console.log(mobile);
+  };
+
+  const JobId = (jobid) => {
+    SetJobId(jobid);
   };
 
   //CommonRegister Authentication
@@ -116,6 +122,14 @@ export const AuthProvider = ({ children, navigation }) => {
     location_latitude
   ) => {
     const locationstring = `POINT(${location_longitude} ${location_latitude})`;
+    console.log(
+      shop_name,
+      shop_shortdescribtion,
+      shop_describtion,
+      shop_address,
+      shop_gst,
+      locationstring
+    );
     SetIsLoading(true);
     axios
       .post(
@@ -139,7 +153,7 @@ export const AuthProvider = ({ children, navigation }) => {
         SetIsLoading(false);
       })
       .catch((error) => {
-        console.warn(error);
+        console.warn(error.status.detail);
         SetIsLoading(false);
       });
   };
@@ -197,7 +211,7 @@ export const AuthProvider = ({ children, navigation }) => {
         let otptoken = res.data.data.token;
         SetOtpToken(otptoken);
         SetIsLoading(false);
-        //console.log(res.data.data.token);
+        console.log(res.data.data.token);
       })
       .catch((e) => {
         console.log(e);
@@ -256,6 +270,62 @@ export const AuthProvider = ({ children, navigation }) => {
       });
   };
 
+  const ValidatePickup = (otp) => {
+    axios
+      .post(
+        `${API_URl}/accept-jobitem/`,
+        {
+          job_id: jobid,
+          token: otptoken,
+          otp: otp,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.status.code === 403) {
+          alert("No job exists");
+        } else {
+          alert("Your Pickup has been Validated!");
+        }
+      })
+      .catch((err) => {
+        alert("Wrong OTP Provided!");
+      });
+  };
+
+  const ValidateDelivery = (otp) => {
+    axios
+      .post(
+        `${API_URl}/item-delivery/`,
+        {
+          job_id: jobid,
+          token: otptoken,
+          otp: otp,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.status.code === 403) {
+          alert("No job exists");
+        } else {
+          alert("Your Delivery has been Validated!");
+        }
+      })
+      .catch((err) => {
+        alert("Wrong OTP Provided!");
+      });
+  };
+
   return (
     <Authcontext.Provider
       value={{
@@ -273,6 +343,10 @@ export const AuthProvider = ({ children, navigation }) => {
         otptoken,
         RegisterShopData,
         DeleteAcc,
+        JobId,
+        jobid,
+        ValidatePickup,
+        ValidateDelivery,
       }}
     >
       {children}

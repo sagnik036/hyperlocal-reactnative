@@ -139,28 +139,50 @@ export default function Jobpost() {
   };
 
   // const handlepost = () => {
-  //   console.log(productname);
-  //   console.log(photoFront, photoBack);
-  //   console.log(jobtitle);
-  //   console.log(jobDesc);
-  //   console.log(quantity);
-  //   console.log(pickupname);
-  //   console.log(pickupphone);
-  //   console.log(lat, longitude);
-  //   console.log(latDel, longitudeDel);
-  //   console.log(selectedDate.dateString);
-  //   console.log(selectedTime.toLocaleTimeString());
-  //   console.log(selectedproduct);
-  //   console.log(name);
-  //   console.log(Phone);
+  // console.log(productname);
+  // console.log(photoFront, photoBack);
+  // console.log(jobtitle);
+  // console.log(jobDesc);
+  // console.log(quantity);
+  // console.log(pickupname);
+  // console.log(pickupphone);
+  // console.log(lat, longitude);
+  // console.log(pickup);
+  // console.log(latDel, longitudeDel);
+  // console.log(drop);
+  // console.log(selectedDate.dateString);
+  // console.log(selectedTime.toLocaleTimeString());
+  // console.log(selectedproduct);
+  // console.log(selected);
+  // console.log(name);
+  // console.log(Phone);
   // };
 
   const SubmitJobPost = (lat, latDel, longitude, longitudeDel, date, time) => {
     const bearertoken = userInfo.token.access;
     const formData = new FormData();
-    const pickupPoint = `POINT(${lat},${longitude})`;
-    const deliveryPoint = `POINT(${latDel},${longitudeDel})`;
+    const pickupPoint = `POINT(${longitude} ${lat})`;
+    const deliveryPoint = `POINT(${longitudeDel} ${latDel})`;
     const dateTime = `${date} ${time}`;
+    const propphone = "+91" + pickupphone;
+    const custphone = "+91" + Phone;
+    console.log(productname);
+    console.log(jobDesc);
+    console.log(selectedproduct);
+    console.log(quantity);
+    console.log(photoFront);
+    console.log(photoBack);
+    console.log(pickup);
+    console.log(pickupPoint);
+    console.log(pickupname);
+    console.log(pickupphone);
+    console.log(drop);
+    console.log(deliveryPoint);
+    console.log(name);
+    console.log(Phone);
+    console.log(selected);
+    console.log(jobtitle);
+    console.log(dateTime);
     formData.append("name", productname);
     formData.append("description", jobDesc);
     formData.append("category", selectedproduct);
@@ -184,14 +206,14 @@ export default function Jobpost() {
     formData.append("pickup_address", pickup);
     formData.append("pickup_location", pickupPoint);
     formData.append("pickup_contact_name", pickupname);
-    formData.append("pickup_contact_phone", pickupphone);
+    formData.append("pickup_contact_phone", propphone);
     formData.append("delivery_address", drop);
     formData.append("delivery_location", deliveryPoint);
     formData.append("delivery_contact_name", name);
-    formData.append("delivery_contact_address", Phone);
+    formData.append("delivery_contact_address", custphone);
     formData.append("preferred_vehicle_type", selected);
     formData.append("title", jobtitle);
-    formData.append("expected_delivery_datetime");
+    formData.append("expected_delivery_datetime", dateTime);
 
     axios
       .post(`${API_URL}/live-jobs/`, formData, {
@@ -201,6 +223,7 @@ export default function Jobpost() {
         },
       })
       .then((res) => {
+        console.log(res.data);
         alert("Job Added");
       })
       .catch((err) => {
@@ -393,7 +416,19 @@ export default function Jobpost() {
             value={Phone}
             onChangeText={(value) => SetPhone(value)}
           />
-          <TouchableOpacity style={styles.Button} onPress={() => handlepost()}>
+          <TouchableOpacity
+            style={styles.Button}
+            onPress={() =>
+              SubmitJobPost(
+                lat,
+                latDel,
+                longitude,
+                longitudeDel,
+                selectedDate.dateString,
+                selectedTime.toLocaleTimeString()
+              )
+            }
+          >
             <Text style={styles.nextStyle}>Post</Text>
           </TouchableOpacity>
         </View>
