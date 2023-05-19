@@ -77,13 +77,19 @@ export default function Dhome({ navigation }) {
   )}
       </View>
 
-      <Image
-        style={styles.Dprofilepic}
-        source={{
-          uri: "https://www.forbesindia.com/media/wpower2020/Monika%20Shergill.jpg",
-        }}
-      />
-
+      {userInfo ? (
+  <Image
+    style={styles.Dprofilepic}
+    source={{ uri: userInfo.data.profile_pic }}
+  />
+) : (
+  <Image
+    style={styles.Dprofilepic}
+    source={{
+      uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
+    }}
+  />
+)}
       <Text style={styles.Delivery}>Current Delivery</Text>
 
       <Text style={styles.currentdetails}>Not applied for any job yet</Text>

@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   login: {
     //width: 97,
     //left: 180,
-    top: height / 9,
+    top: height / 7,
     fontWeight: "900",
     fontSize: 36,
     alignItems: "center",

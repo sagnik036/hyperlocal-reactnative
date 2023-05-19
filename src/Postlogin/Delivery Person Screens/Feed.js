@@ -81,7 +81,7 @@ export default function Feed({navigation}) {
             }}
             onPress={()=>navigation.navigate("Delivery Details",{paramKey:item.job_id})}
             >
-            <Text
+              <Text
               style={{
                 textAlign: "center",
                 color: "white",

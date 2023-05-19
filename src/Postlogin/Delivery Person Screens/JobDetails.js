@@ -175,9 +175,9 @@ export default function JobDetails({ route }) {
           left: 10,
           top: 50,
         }}
-        onPress={() => acceptjob() }
-        
+        onPress={() => acceptjob()}
       >
+        
         <Text
           style={{
             textAlign: "center",
