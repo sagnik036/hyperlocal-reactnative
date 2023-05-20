@@ -70,20 +70,7 @@ const Sidebar = () => {
           ),
         }}
       />
-      <Drawer.Screen
-        name="Change Language"
-        component={ChangeLang}
-        options={{
-          drawerIcon: ({ color }) => (
-            <FontAwesome
-              name="language"
-              size={24}
-              color={color}
-              style={{ left: 10 }}
-            />
-          ),
-        }}
-      />
+
       <Drawer.Screen
         name="Profile"
         component={Profile}
@@ -98,20 +85,7 @@ const Sidebar = () => {
           ),
         }}
       />
-      <Drawer.Screen
-        name="Settings"
-        component={Settings}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Feather
-              name="settings"
-              size={24}
-              color={color}
-              style={{ left: 10 }}
-            />
-          ),
-        }}
-      />
+
       <Drawer.Screen
         name="Help"
         component={Help}
