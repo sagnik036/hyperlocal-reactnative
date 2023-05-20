@@ -2,7 +2,6 @@ import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import D_CustomDrawer from "./D_CustomDrawer";
 import Dhome from "../Delivery Person/Dhome";
 import Feed from "../Postlogin/Delivery Person Screens/Feed";
@@ -13,6 +12,7 @@ import Helep from "../Postlogin/Delivery Person Screens/Helep";
 import Dprofile from "../Postlogin/Delivery Person Screens/Dprofile";
 import { Octicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import Wallet from "../Postlogin/Delivery Person Screens/Wallet";
 
 const D_Sidebar = () => {
   const Drawer = createDrawerNavigator();
@@ -78,6 +78,15 @@ const D_Sidebar = () => {
         options={{
           drawerIcon: ({ color }) => (
             <FontAwesome name="cubes" size={18} color="black" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Wallet"
+        component={Wallet}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="wallet" size={24} color="black" />
           ),
         }}
       />
