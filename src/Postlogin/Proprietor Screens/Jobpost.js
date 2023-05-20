@@ -164,13 +164,13 @@ export default function Jobpost() {
     const pickupPoint = `POINT(${longitude} ${lat})`;
     const deliveryPoint = `POINT(${longitudeDel} ${latDel})`;
     const dateTime = `${date} ${time}`;
-    const propphone = "+91" + pickupphone;
-    const custphone = "+91" + Phone;
+    // const propphone = "+91" + pickupphone;
+    // const custphone = "+91" + Phone;
     formData.append("name", productname);
     formData.append("description", jobDesc);
     formData.append("category", selectedproduct);
     formData.append("quantity", quantity);
-    formData.append("photo1", {
+    formData.append("photo_1", {
       uri:
         Platform.OS === "android"
           ? photoFront
@@ -178,7 +178,7 @@ export default function Jobpost() {
       name: "photo1.jpg",
       type: "image/jpeg",
     });
-    formData.append("photo2", {
+    formData.append("photo_2", {
       uri:
         Platform.OS === "android"
           ? photoFront
@@ -189,11 +189,11 @@ export default function Jobpost() {
     formData.append("pickup_address", pickup);
     formData.append("pickup_location", pickupPoint);
     formData.append("pickup_contact_name", pickupname);
-    formData.append("pickup_contact_phone", propphone);
+    formData.append("pickup_contact_phone", "+91" + pickupphone);
     formData.append("delivery_address", drop);
     formData.append("delivery_location", deliveryPoint);
     formData.append("delivery_contact_name", name);
-    formData.append("delivery_contact_address", custphone);
+    formData.append("delivery_contact_phone", "+91" + Phone);
     formData.append("preferred_vehicle_type", selected);
     formData.append("title", jobtitle);
     formData.append("expected_delivery_datetime", dateTime);

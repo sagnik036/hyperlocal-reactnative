@@ -26,7 +26,7 @@ export default function Home({ navigation }) {
         },
       })
       .then((res) => {
-        //console.log(res.data);
+        //console.log(res.data.count);
         let shopinfo = res.data;
         setShopinfo(shopinfo);
       })
@@ -57,7 +57,7 @@ export default function Home({ navigation }) {
       <Text style={styles.name}>
         {userInfo.data.first_name} {userInfo.data.last_name}
       </Text>
-      {shopinfo && shopinfo.results ? (
+      {shopinfo && shopinfo.count === 1 ? (
         <>
           <Text style={styles.SName}>
             Owner of
@@ -69,7 +69,7 @@ export default function Home({ navigation }) {
           </Text> */}
         </>
       ) : (
-        <Text>No Info</Text>
+        <Text style={styles.SName}>No Shop</Text>
       )}
 
       {userInfo.data.profile_pic ? (
