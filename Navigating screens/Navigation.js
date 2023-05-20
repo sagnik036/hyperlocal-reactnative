@@ -16,6 +16,7 @@ import ResetPassword from "../src/Login/ResetPassword";
 import Shopdetails from "../src/Register/Proprietor/Shopdetails";
 import Livelocation from "../src/Register/Proprietor/Livelocation";
 import JobDetails from "../src/Postlogin/Delivery Person Screens/JobDetails";
+import Deliveryjobdetails from "../src/Delivery Person/Deliveryjobdetails";
 
 
 
@@ -101,7 +102,11 @@ export default function Navigation() {
           component={JobDetails}
           options={{ headerShown: false }}
         />
-         
+         <Stack.Screen
+          name="Delivery Jobdetails"
+          component={Deliveryjobdetails}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
