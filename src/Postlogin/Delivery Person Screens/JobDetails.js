@@ -6,12 +6,12 @@ import {
   Dimensions,
   Linking,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { API_URl } from "@env";
 import axios from "axios";
 import { Authcontext } from "../../../api/Authcontext";
-import Setting from "./Setting";
 
 const { height, width } = Dimensions.get("window");
 export default function JobDetails({ route }) {
@@ -72,186 +72,150 @@ export default function JobDetails({ route }) {
   };
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          fontSize: 30,
-          fontWeight: "700",
-          bottom: 110,
-          textAlign: "center",
-        }}
-      >
-        Job Details
-      </Text>
-      {data ? (
-        <>
-          <Text
-            style={{ fontSize: 16, right: 100, bottom: 80, marginBottom: 15 }}
-          >
-            Product Name: {data.data.name}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 112, bottom: 80, marginBottom: 15 }}
-          >
-            Description: {data.data.description}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 92, bottom: 80, marginBottom: 15 }}
-          >
-            Product Category:{" "}
-            {data.data.category === "908c63a4-9df3-4269-909d-ace6992ea9ee"
-              ? "Heavy"
-              : "Fragile"}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 125, bottom: 80, marginBottom: 15 }}
-          >
-            Quantity: {data.data.quantity}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 97, bottom: 80, marginBottom: 15 }}
-          >
-            Pickup Location: {data.data.pickup_address}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 105, bottom: 80, marginBottom: 15 }}
-          >
-            Drop Location: {data.data.delivery_address}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 110, bottom: 80, marginBottom: 15 }}
-          >
-            Owner Name: {data.data.pickup_contact_name}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 105, bottom: 80, marginBottom: 15 }}
-          >
-            Contact Owner: {data.data.pickup_contact_phone}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 100, bottom: 80, marginBottom: 15 }}
-          >
-            Customer Name: {data.data.delivery_contact_name}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 94, bottom: 80, marginBottom: 15 }}
-          >
-            Contact Customer: {data.data.delivery_contact_phone}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 115, bottom: 80, marginBottom: 15 }}
-          >
-            Delivery Fee: {data.data.delivery_boy_fee}
-          </Text>
-          <Text
-            style={{ fontSize: 16, right: 60, bottom: 80, marginBottom: 15 }}
-          >
-            Estimated Completion Time:{" "}
-            {getFormattedDuration(data.data.estimated_duration)}
-          </Text>
-          <Image
-            style={styles.product1}
-            source={{
-              uri: data.data.photo_1,
-            }}
-          />
-          <Image
-            style={styles.product2}
-            source={{
-              uri: data.data.photo_2,
-            }}
-          />
-          <TouchableOpacity
-            style={{
-              justifyContent: "center",
-              padding: 10,
-              borderRadius: 10,
-              backgroundColor: "#F02121",
-              height: 50,
-              width: 150,
-              marginTop: 5,
-              marginBottom: 5,
-              left: 10,
-              top: 50,
-            }}
-            onPress={() =>
-              openGoogleMaps(
-                data.data.pickup_location.coordinates[1],
-                data.data.pickup_location.coordinates[0]
-              )
-            }
-          >
+      <ScrollView>
+        <View style={{ top: 20 }}>
+          <Text style={styles.JobdetailText}>Job Details</Text>
+        </View>
+        <View style={{ height: 50, wid: 50 }} />
+        {data ? (
+          <>
+            <Text style={styles.AllDetailText}>
+              Product Name : <Text>{data.data.name}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Description : <Text>{data.data.description}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Product Category :{" "}
+              <Text style={styles.AllDetailText}>
+                {data.data.category === "908c63a4-9df3-4269-909d-ace6992ea9ee"
+                  ? "Heavy"
+                  : "Fragile"}
+              </Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Quantity : <Text>{data.data.quantity}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Pickup Location : <Text>{data.data.pickup_address}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Drop Location : <Text>{data.data.delivery_address}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Owner Name : <Text>{data.data.pickup_contact_name}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Conatact Owner : <Text>{data.data.pickup_contact_phone}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Customer Name : <Text>{data.data.delivery_contact_name}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Contact Customer : <Text>{data.data.delivery_contact_phone}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Delivery Fee : <Text>{data.data.delivery_boy_fee}</Text>
+            </Text>
+            <Text style={styles.AllDetailText}>
+              Estimated Completion Time:{" "}
+              <Text>{getFormattedDuration(data.data.estimated_duration)}</Text>
+            </Text>
             <Text
               style={{
-                textAlign: "center",
-                color: "white",
-                fontWeight: "700",
-                fontSize: 20,
+                fontSize: 16,
+                left: width / 12,
+                margin: 10,
+                width: width / 1.26,
+                fontWeight: "bold",
               }}
             >
-              View Pickup
+              Product Images:
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              justifyContent: "center",
-              padding: 10,
-              borderRadius: 10,
-              backgroundColor: "#F02121",
-              height: 50,
-              width: 150,
-              marginTop: 5,
-              marginBottom: 5,
-              left: 10,
-              top: 50,
-            }}
-            onPress={() =>
-              openGoogleMaps(
-                data.data.delivery_location.coordinates[1],
-                data.data.delivery_location.coordinates[0]
-              )
-            }
-          >
+            <Image
+              style={styles.product1}
+              source={{
+                uri: data.data.photo_1,
+              }}
+            />
+            <Image
+              style={styles.product2}
+              source={{
+                uri: data.data.photo_2,
+              }}
+            />
             <Text
               style={{
-                textAlign: "center",
-                color: "white",
-                fontWeight: "700",
-                fontSize: 20,
+                fontSize: 16,
+                left: width / 12,
+                margin: 10,
+                width: width / 1.2,
+                fontWeight: "bold",
               }}
             >
-              View Drop
+              View Pickup And Drop Location in Google Maps:
             </Text>
-          </TouchableOpacity>
-        </>
-      ) : (
-        <Text>No job details available</Text>
-      )}
-      <TouchableOpacity
-        style={{
-          justifyContent: "center",
-          padding: 10,
-          borderRadius: 10,
-          backgroundColor: "#F02121",
-          height: 50,
-          width: 150,
-          marginTop: 5,
-          marginBottom: 5,
-          left: 10,
-          top: 50,
-        }}
-        onPress={() => acceptjob()}
-      >
-        <Text
-          style={{
-            textAlign: "center",
-            color: "white",
-            fontWeight: "700",
-            fontSize: 20,
-          }}
+            <TouchableOpacity
+              style={styles.Pickupbutton}
+              onPress={() =>
+                openGoogleMaps(
+                  data.data.pickup_location.coordinates[1],
+                  data.data.pickup_location.coordinates[0]
+                )
+              }
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  fontWeight: "700",
+                  fontSize: 20,
+                }}
+              >
+                View Pickup
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.Pickupbutton}
+              onPress={() =>
+                openGoogleMaps(
+                  data.data.delivery_location.coordinates[1],
+                  data.data.delivery_location.coordinates[0]
+                )
+              }
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  fontWeight: "700",
+                  fontSize: 20,
+                }}
+              >
+                View Drop
+              </Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Text>No job details available</Text>
+        )}
+        <View style={{ height: 20, width: 20 }} />
+        <TouchableOpacity
+          style={styles.Pickupbutton}
+          onPress={() => acceptjob()}
         >
-          Accept
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              textAlign: "center",
+              color: "white",
+              fontWeight: "700",
+              fontSize: 20,
+            }}
+          >
+            Accept This Job
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }
@@ -259,23 +223,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   product1: {
-    position: "absolute",
-    width: 100,
-    height: 100,
-    right: 220,
-    bottom: 180,
+    width: width / 1.2,
+    height: width / 1.2,
+    left: width / 10,
     resizeMode: "contain",
   },
   product2: {
-    position: "absolute",
-    width: 100,
-    height: 100,
-    right: 85,
-    bottom: 180,
+    width: width / 1.2,
+    height: width / 1.2,
+    left: width / 10,
     resizeMode: "contain",
+  },
+  JobdetailText: {
+    fontSize: 30,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  AllDetailText: {
+    fontSize: 16,
+    left: width / 12,
+    margin: 10,
+    width: width / 1.26,
+  },
+  Pickupbutton: {
+    justifyContent: "center",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#F02121",
+    height: width / 7,
+    width: width / 1.2,
+    marginTop: 5,
+    marginBottom: 5,
+    left: width / 10,
   },
 });

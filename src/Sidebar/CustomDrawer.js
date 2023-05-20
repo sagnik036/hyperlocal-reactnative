@@ -16,7 +16,7 @@ import { Authcontext } from "../../api/Authcontext";
 const { height, width } = Dimensions.get("window");
 
 export default function CustomDrawer(props) {
-  const { logout } = useContext(Authcontext);
+  const { userInfo, logout } = useContext(Authcontext);
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -29,19 +29,31 @@ export default function CustomDrawer(props) {
           }}
           style={{ padding: 15 }}
         >
-          <Image
-            source={{
-              uri: "https://images.news18.com/ibnlive/uploads/2021/10/gus-fring--16336703954x3.jpg",
-            }}
-            style={{
-              height: 80,
-              width: 80,
-              borderRadius: 50,
-              marginBottom: 10,
-            }}
-          />
+          {userInfo.data.profile_pic ? (
+            <Image
+              style={{
+                height: 80,
+                width: 80,
+                borderRadius: 50,
+                marginBottom: 10,
+              }}
+              source={{ uri: userInfo.data.profile_pic }}
+            />
+          ) : (
+            <Image
+              style={{
+                height: 80,
+                width: 80,
+                borderRadius: 50,
+                marginBottom: 10,
+              }}
+              source={{
+                uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
+              }}
+            />
+          )}
           <Text style={{ color: "white", fontSize: 18, fontWeight: "400" }}>
-            Gustavo Fring
+            {userInfo.data.first_name}
           </Text>
         </ImageBackground>
 

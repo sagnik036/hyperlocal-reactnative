@@ -5,6 +5,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
@@ -17,6 +18,8 @@ const { height, width } = Dimensions.get("window");
 export default function Feed({ navigation }) {
   const { userInfo } = useContext(Authcontext);
   const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
   const token = userInfo.token.access;
   const feedapicall = () => {
     axios
@@ -26,16 +29,27 @@ export default function Feed({ navigation }) {
         },
       })
       .then((res) => {
-        console.log(res.data.results);
+        console.log("api called");
         setData(res.data.results);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  const onRefresh = () => {
+    setRefreshing(true);
+    feedapicall();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     feedapicall();
+    // let interval = setInterval(() => {
+    //   feedapicall();
+    // }, 5000);
+    // return () => {
+    //   clearInterval(interval);
+    // };
   }, []);
 
   function getFormattedDuration(duration) {
@@ -122,6 +136,9 @@ export default function Feed({ navigation }) {
                 </TouchableOpacity>
               </View>
             )}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           />
         </View>
       ) : (
@@ -148,7 +165,7 @@ const styles = StyleSheet.create({
   flatlistc: {
     width: "100%",
     bottom: width / 3,
-    left: width / 10,
+    left: width / 12,
   },
   product: {
     position: "absolute",

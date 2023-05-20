@@ -6,13 +6,37 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, IconButton } from "react-native-paper";
 import { Authcontext } from "../../api/Authcontext";
+import axios from "axios";
+import { API_URl } from "@env";
 const { height, width } = Dimensions.get("window");
 
 export default function Home({ navigation }) {
   const { userInfo } = useContext(Authcontext);
+  const [shopinfo, setShopinfo] = useState(null);
+  const shopid = userInfo.data.id;
+  const shoptoken = userInfo.token.access;
+  const apicall = () => {
+    axios
+      .get(`${API_URl}/shopdata/?search=${shopid}`, {
+        headers: {
+          Authorization: `Bearer ${shoptoken}`,
+        },
+      })
+      .then((res) => {
+        //console.log(res.data);
+        let shopinfo = res.data;
+        setShopinfo(shopinfo);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    apicall();
+  }, []);
   return (
     <View style={styles.container}>
       <IconButton
@@ -33,21 +57,34 @@ export default function Home({ navigation }) {
       <Text style={styles.name}>
         {userInfo.data.first_name} {userInfo.data.last_name}
       </Text>
-      <Text style={styles.SName}>
-        Owner of
-        <Text style={styles.S2name}> Med Pharm</Text>
-      </Text>
-      <Text style={styles.Sdetail}>
-        Medicine Store{"    "}
-        <Text>In Kudghat</Text>
-      </Text>
+      {shopinfo && shopinfo.results ? (
+        <>
+          <Text style={styles.SName}>
+            Owner of
+            <Text style={styles.S2name}> {shopinfo.results[0].shop_name}</Text>
+          </Text>
+          {/* <Text style={styles.Sdetail}>
+            Medicine Store{"    "}
+            <Text>In Kudghat</Text>
+          </Text> */}
+        </>
+      ) : (
+        <Text>No Info</Text>
+      )}
 
-      <Image
-        style={styles.profilepic}
-        source={{
-          uri: "https://images.news18.com/ibnlive/uploads/2021/10/gus-fring--16336703954x3.jpg",
-        }}
-      />
+      {userInfo.data.profile_pic ? (
+        <Image
+          style={styles.profilepic}
+          source={{ uri: userInfo.data.profile_pic }}
+        />
+      ) : (
+        <Image
+          style={styles.profilepic}
+          source={{
+            uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
+          }}
+        />
+      )}
 
       <Text style={styles.CurrentPost}>Current Post</Text>
 
@@ -107,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     left: width / 3.35,
-    top: width / 2.03,
+    top: width / 2,
     fontSize: 18,
     color: "#5C5C5C",
     fontWeight: "400",

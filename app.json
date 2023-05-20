@@ -39,8 +39,16 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "mapbox",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoibWF5dWtoYWNoYXJ5YTA3MDkiLCJhIjoiY2xodm9rZDh1MGJ1bTN1cndnaHpiMGhycyJ9.tyjxJcZyAcDB2rcGVcD0Xw"
+        }
       ]
     ],
+    
     "extra": {
       "eas": {
         "projectId": "f860454f-3197-4e82-a245-e2eb06820fc1"

@@ -61,32 +61,34 @@ export default function Dprofile({ navigation }) {
 
   return (
     <View style={styles.container}>
-    <IconButton onPress={()=>navigation.openDrawer()}
-      icon="menu"
-      iconColor="black"
-      mode="contained"
-      size={30}
-      style={styles.menu}
-    />
-    <Text style={styles.Dtext}>Hey</Text>
-    <Text style={styles.Dname}>
-      {userInfo.data.first_name}
-    </Text>
-    
-    {cInfo && cInfo.results && cInfo.results[0] && cInfo.results[0].user && cInfo.results[0].user.profile_pic ? (
-  <Image
-    style={styles.Dprofilepic}
-    source={{ uri: cInfo.results[0].user.profile_pic }}
-  />
-) : (
-  <Image
-    style={styles.Dprofilepic}
-    source={{
-      uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
-    }}
-  />
-)}
-    
+      <IconButton
+        onPress={() => navigation.openDrawer()}
+        icon="menu"
+        iconColor="black"
+        mode="contained"
+        size={30}
+        style={styles.menu}
+      />
+      <Text style={styles.Dtext}>Hey</Text>
+      <Text style={styles.Dname}>{userInfo.data.first_name}</Text>
+
+      {cInfo &&
+      cInfo.results &&
+      cInfo.results[0] &&
+      cInfo.results[0].user &&
+      cInfo.results[0].user.profile_pic ? (
+        <Image
+          style={styles.Dprofilepic}
+          source={{ uri: cInfo.results[0].user.profile_pic }}
+        />
+      ) : (
+        <Image
+          style={styles.Dprofilepic}
+          source={{
+            uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
+          }}
+        />
+      )}
 
       <IconButton
         icon="delete"

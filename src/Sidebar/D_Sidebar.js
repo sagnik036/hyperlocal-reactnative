@@ -11,87 +11,87 @@ import Lang from "../Postlogin/Delivery Person Screens/Lang";
 import Setting from "../Postlogin/Delivery Person Screens/Setting";
 import Helep from "../Postlogin/Delivery Person Screens/Helep";
 import Dprofile from "../Postlogin/Delivery Person Screens/Dprofile";
-import { Octicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Octicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const D_Sidebar = () => {
-
-    const Drawer = createDrawerNavigator();
-    return (
-       <Drawer.Navigator drawerContent={(props) => <D_CustomDrawer {...props} />} 
-       screenOptions={{ 
+  const Drawer = createDrawerNavigator();
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <D_CustomDrawer {...props} />}
+      screenOptions={{
         headerShown: false,
         drawerActiveBackgroundColor: "red",
         drawerActiveTintColor: "#fff",
         drawerInactiveTintColor: "#333",
         drawerLabelStyle: { marginLeft: 25, fontSize: 15 },
-        }}>
-       <Drawer.Screen 
-        name="Home" 
+      }}
+    >
+      <Drawer.Screen
+        name="Home"
         component={Dhome}
         options={{
           drawerIcon: ({ color }) => (
             <FontAwesome name="home" size={20} color={color} />
           ),
         }}
-        />
-         <Drawer.Screen 
-        name="Profile" 
+      />
+      <Drawer.Screen
+        name="Profile"
         component={Dprofile}
         options={{
-        drawerIcon: ({ color }) => (
+          drawerIcon: ({ color }) => (
             <Ionicons name="person-circle-sharp" size={23} color={color} />
           ),
         }}
-        />
-        <Drawer.Screen 
-        name="Feed" 
+      />
+      <Drawer.Screen
+        name="Feed"
         component={Feed}
         options={{
-        drawerIcon: ({ color }) => (
+          drawerIcon: ({ color }) => (
             <FontAwesome name="newspaper-o" size={20} color={color} />
           ),
         }}
-        />
-         <Drawer.Screen 
-        name="Verify your Pickup" 
+      />
+      <Drawer.Screen
+        name="Verify your Pickup"
         component={Setting}
         options={{
-        drawerIcon: ({ color }) => (
-          <Octicons name="verified" size={20} color="black" />
+          drawerIcon: ({ color }) => (
+            <Octicons name="verified" size={20} color="black" />
           ),
         }}
-        />
-         <Drawer.Screen 
-        name="Verify Your Delivery" 
+      />
+      <Drawer.Screen
+        name="Verify Your Delivery"
         component={Lang}
         options={{
-        drawerIcon: ({ color }) => (
-          <MaterialIcons name="verified-user" size={20} color="black" />
+          drawerIcon: ({ color }) => (
+            <MaterialIcons name="verified-user" size={20} color="black" />
           ),
         }}
-        />
-         <Drawer.Screen 
-        name="My Deliveries" 
+      />
+      <Drawer.Screen
+        name="My Deliveries"
         component={Deliveries}
         options={{
-        drawerIcon: ({ color }) => (
-          <FontAwesome name="cubes" size={18} color="black" />
+          drawerIcon: ({ color }) => (
+            <FontAwesome name="cubes" size={18} color="black" />
           ),
         }}
-        />
-        <Drawer.Screen 
-        name="Help" 
+      />
+      <Drawer.Screen
+        name="Help"
         component={Helep}
         options={{
-        drawerIcon: ({ color }) => (
+          drawerIcon: ({ color }) => (
             <FontAwesome name="question-circle-o" size={20} color={color} />
           ),
         }}
-        />
-        
-       </Drawer.Navigator>
-    );
-}
+      />
+    </Drawer.Navigator>
+  );
+};
 
 export default D_Sidebar;

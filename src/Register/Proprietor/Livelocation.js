@@ -11,6 +11,7 @@ import * as Location from "expo-location";
 import { Button, TextInput } from "react-native-paper";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Authcontext } from "../../../api/Authcontext";
+import Mapbox from "@rnmapbox/maps";
 
 const { height, width } = Dimensions.get("window");
 
@@ -96,6 +97,7 @@ export default function Livelocation({ navigation, route }) {
       >
         Current Location
       </Button>
+      {/* <Mapbox.MapView reg></Mapbox.MapView> */}
       <MapView
         style={styles.map}
         region={mapRegion}

@@ -1,19 +1,26 @@
-import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
 import { Authcontext } from "../../api/Authcontext";
-import axios from 'axios';
+import axios from "axios";
 import { API_URl } from "@env";
 
 const { height, width } = Dimensions.get("window");
 
 export default function Dhome({ navigation }) {
   const { userInfo } = useContext(Authcontext);
-  const [cInfo,setcInfo]=useState(null)
-  const [wheelType,setwheelType]=useState(null)
-  const vToken= userInfo.token.access
-  const vId= userInfo.data.id 
-  const vType=()=>{
+  const [cInfo, setcInfo] = useState(null);
+  const [wheelType, setwheelType] = useState(null);
+  const vToken = userInfo.token.access;
+  const vId = userInfo.data.id;
+  const vType = () => {
     if (cInfo && cInfo.results && cInfo.results.length > 0) {
       const wheel = cInfo.results[0].vehicle_type;
       if (wheel == "TW") {
@@ -25,31 +32,36 @@ export default function Dhome({ navigation }) {
       } else {
         setwheelType("other");
       }
-    };
-  }
-  const vInfo =()=>{
-    axios.get(`${API_URl}/vehicledata/?search=${vId}`,
-    {
-      headers:{
-        Authorization:`Bearer ${vToken}`
-      }
-    }).then((res)=>{
-      //console.log(res.data)
-      let cInfo=res.data
-      setcInfo(cInfo)
-      //console.log(cInfo)
-    }).catch((err)=>{
-      //console.log(err)
-      alert("not found")
-    })
-  }
-  useEffect(()=>
-  {vInfo()},[])
-  useEffect(()=>
-  {vType()},[cInfo])
+    }
+  };
+  const vInfo = () => {
+    axios
+      .get(`${API_URl}/vehicledata/?search=${vId}`, {
+        headers: {
+          Authorization: `Bearer ${vToken}`,
+        },
+      })
+      .then((res) => {
+        //console.log(res.data)
+        let cInfo = res.data;
+        setcInfo(cInfo);
+        //console.log(cInfo)
+      })
+      .catch((err) => {
+        //console.log(err)
+        alert("not found");
+      });
+  };
+  useEffect(() => {
+    vInfo();
+  }, []);
+  useEffect(() => {
+    vType();
+  }, [cInfo]);
   return (
     <View style={styles.container}>
-      <IconButton onPress={()=>navigation.openDrawer()}
+      <IconButton
+        onPress={() => navigation.openDrawer()}
         icon="menu"
         iconColor="black"
         mode="contained"
@@ -66,30 +78,31 @@ export default function Dhome({ navigation }) {
       <Text style={styles.Dname}>
         {userInfo.data.first_name} {userInfo.data.last_name}
       </Text>
-      <Text style={styles.Dcount}>Total 
-      <Text style={{fontWeight: '800'}}> {userInfo.data.jobs_count} </Text>
-       deliveries till now</Text>
+      <Text style={styles.Dcount}>
+        Total
+        <Text style={{ fontWeight: "800" }}> {userInfo.data.jobs_count} </Text>
+        deliveries till now
+      </Text>
       <View style={styles.Vtype}>
         {cInfo && cInfo.results ? (
-    <Text>{wheelType} wheeler</Text>
-  ) : (
-    <Text>No Info</Text>
-  )}
+          <Text>{wheelType} wheeler</Text>
+        ) : (
+          <Text>No Info</Text>
+        )}
       </View>
-
-      {userInfo ? (
-  <Image
-    style={styles.Dprofilepic}
-    source={{ uri: userInfo.data.profile_pic }}
-  />
-) : (
-  <Image
-    style={styles.Dprofilepic}
-    source={{
-      uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
-    }}
-  />
-)}
+      {userInfo.data.profile_pic ? (
+        <Image
+          style={styles.Dprofilepic}
+          source={{ uri: userInfo.data.profile_pic }}
+        />
+      ) : (
+        <Image
+          style={styles.Dprofilepic}
+          source={{
+            uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
+          }}
+        />
+      )}
       <Text style={styles.Delivery}>Current Delivery</Text>
 
       <Text style={styles.currentdetails}>Not applied for any job yet</Text>
@@ -98,12 +111,12 @@ export default function Dhome({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  menu:{
+  menu: {
     position: "absolute",
     alignItems: "center",
     backgroundColor: "white",
-    left: width/25,
-    top: height/40,
+    left: width / 25,
+    top: height / 40,
   },
   container: {
     flex: 1,
@@ -128,8 +141,8 @@ const styles = StyleSheet.create({
     display: "flex",
     width: 117,
     height: 22,
-    left: 118,
-    top: 166,
+    left: width / 3.3,
+    top: width / 2.34,
     fontSize: 18,
     color: "#0F0F0F",
     fontWeight: "900",
@@ -140,8 +153,8 @@ const styles = StyleSheet.create({
     display: "flex",
     width: 182,
     height: 21,
-    left: 118,
-    top: 195,
+    left: width / 3.3,
+    top: width / 2.02,
     fontSize: 14,
     color: "#5C5C5C",
     fontWeight: "400",
@@ -153,8 +166,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 100,
     borderWidth: 2,
-    top: 65,
-    right: 50,
+    top: width / 5.2,
+    right: width / 12,
   },
   Dprofilepic: {
     position: "absolute",
@@ -170,8 +183,8 @@ const styles = StyleSheet.create({
     display: "flex",
     width: 200,
     height: 30,
-    left: 30,
-    bottom: 500,
+    left: width / 9,
+    top: width / 1.38,
     fontSize: 18,
     color: "black",
     fontWeight: "600",
@@ -182,8 +195,8 @@ const styles = StyleSheet.create({
     display: "flex",
     width: 280,
     height: 500,
-    left: 25,
-    top: 200,
+    left: width / 13,
+    top: width / 2,
     fontSize: 20,
     color: "#5C5C5C",
     fontWeight: "200",
