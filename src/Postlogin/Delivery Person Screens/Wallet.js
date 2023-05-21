@@ -17,7 +17,7 @@ export default function Wallet({navigation}) {
                 Authorization:`Bearer ${walletToken}`
             }
         }).then((res)=>{
-            console.log(res.data)
+            console.log(res.data.data.transactions)
             let apidata = res.data
             setApidata(apidata)
         }).catch((err)=>{
@@ -108,7 +108,11 @@ export default function Wallet({navigation}) {
                     width: 200,
                     marginTop: 25,
                     marginBottom: 5,
-                  }}>
+                  }}
+                  onPress={() =>
+                    navigation.navigate("Transaction History")
+                  }
+                  >
                   <Text
                     style={{
                       textAlign: "center",

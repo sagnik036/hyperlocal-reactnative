@@ -20,7 +20,7 @@ const D_CustomDrawer = (props) => {
       >
         <ImageBackground
           source={{
-            uri: "https://swall.teahub.io/photos/small/69-699380_picsart-background-hd-images-new-cb-edits-background.jpg",
+            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKnYRJPoOuxcyeD2_drXDUs5QuYuLiY4-dnA&usqp=CAU",
           }}
           style={{ padding: 15 }}
         >
@@ -47,8 +47,8 @@ const D_CustomDrawer = (props) => {
               }}
             />
           )}
-          <Text style={{ color: "#FCF5E5", fontSize: 18, fontWeight: "400" }}>
-            {userInfo.data.first_name}
+          <Text style={{ color: "#FCF5E5", fontSize: 18, fontWeight: "700", left: 10 }}>
+            {userInfo.data.first_name}{" "}{userInfo.data.last_name}
           </Text>
         </ImageBackground>
 

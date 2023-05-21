@@ -17,6 +17,7 @@ import Shopdetails from "../src/Register/Proprietor/Shopdetails";
 import Livelocation from "../src/Register/Proprietor/Livelocation";
 import JobDetails from "../src/Postlogin/Delivery Person Screens/JobDetails";
 import OTPLogin from "../src/Login/OTPLogin";
+import History from "../src/Postlogin/Delivery Person Screens/History";
 
 export default function Navigation() {
   const Stack = createNativeStackNavigator();
@@ -103,6 +104,11 @@ export default function Navigation() {
         <Stack.Screen
           name="Delivery Details"
           component={JobDetails}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Transaction History"
+          component={History}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

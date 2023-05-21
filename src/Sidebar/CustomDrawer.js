@@ -25,7 +25,7 @@ export default function CustomDrawer(props) {
       >
         <ImageBackground
           source={{
-            uri: "https://w0.peakpx.com/wallpaper/1016/312/HD-wallpaper-red-liquid-metal-red-abstract-black-dark-design-liquid-metal-mix.jpg",
+            uri: "https://loveshayariimages.in/wp-content/uploads/2021/10/New-Red-Wallpaper-photo-images-download-scaled.jpg",
           }}
           style={{ padding: 15 }}
         >
@@ -52,8 +52,8 @@ export default function CustomDrawer(props) {
               }}
             />
           )}
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "400" }}>
-            {userInfo.data.first_name}
+          <Text style={{ color: "white", fontSize: 18, fontWeight: "700", left: 10 }}>
+            {userInfo.data.first_name}{" "}{userInfo.data.last_name}
           </Text>
         </ImageBackground>
 

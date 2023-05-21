@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     left: 42,
-    top: 170,
+    top: 180,
     borderRadius: 50,
   },
   Delivery: {
