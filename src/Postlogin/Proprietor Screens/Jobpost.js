@@ -21,6 +21,7 @@ import * as Location from "expo-location";
 import axios from "axios";
 import { API_TOKEN, API_URL } from "@env";
 import { Authcontext } from "../../../api/Authcontext";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default function Jobpost() {
   const { userInfo } = useContext(Authcontext);
@@ -57,6 +58,7 @@ export default function Jobpost() {
   const [quantity, SetQuantity] = useState(null);
   const [pickupname, SetpickupName] = useState(null);
   const [pickupphone, SetpickupPhone] = useState(null);
+  const [isloading, SetIsloading] = useState(false);
 
   const handleDayPress = (date) => {
     setSelectedDate(date);
@@ -181,8 +183,8 @@ export default function Jobpost() {
     formData.append("photo_2", {
       uri:
         Platform.OS === "android"
-          ? photoFront
-          : photoFront.replace("file://", ""),
+          ? photoBack
+          : photoBack.replace("file://", ""),
       name: "photo2.jpg",
       type: "image/jpeg",
     });
@@ -197,7 +199,7 @@ export default function Jobpost() {
     formData.append("preferred_vehicle_type", selected);
     formData.append("title", jobtitle);
     formData.append("expected_delivery_datetime", dateTime);
-
+    SetIsloading(true);
     axios
       .post(`${API_URL}/live-jobs/`, formData, {
         headers: {
@@ -208,6 +210,7 @@ export default function Jobpost() {
       .then((res) => {
         console.log(res.data);
         alert("Job Added");
+        SetIsloading(false);
       })
       .catch((err) => {
         alert("You cannot send job");
@@ -217,6 +220,7 @@ export default function Jobpost() {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
+        <Spinner visible={isloading} color="red" />
         <Text style={styles.Heading}>Product Name</Text>
         <TextInput
           style={styles.input}

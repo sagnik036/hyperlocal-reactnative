@@ -6,13 +6,13 @@ import {
   Image,
   TouchableOpacity,
   RefreshControl,
+  FlatList,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
 import { API_URl } from "@env";
 import axios from "axios";
 import { Authcontext } from "../../../api/Authcontext";
-import { FlatList } from "react-native-gesture-handler";
 const { height, width } = Dimensions.get("window");
 
 export default function Feed({ navigation }) {

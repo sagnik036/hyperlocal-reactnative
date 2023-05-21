@@ -60,12 +60,19 @@ export default function Profile({ navigation }) {
       />
       <Text style={styles.text1}>Hey</Text>
       <Text style={styles.text2}>{userInfo.data.first_name}</Text>
-      <Image
-        style={styles.Dprofilepic}
-        source={{
-          uri: "https://www.forbesindia.com/media/wpower2020/Monika%20Shergill.jpg",
-        }}
-      />
+      {userInfo.data.profile_pic ? (
+        <Image
+          style={styles.Dprofilepic}
+          source={{ uri: userInfo.data.profile_pic }}
+        />
+      ) : (
+        <Image
+          style={styles.Dprofilepic}
+          source={{
+            uri: "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg",
+          }}
+        />
+      )}
       <Text style={styles.text3}>
         Logged in Via {userInfo.data.mobile_number}
       </Text>
@@ -74,7 +81,7 @@ export default function Profile({ navigation }) {
         {shopinfo && shopinfo.count === 1 ? (
           <Text style={styles.text5}>{shopinfo.results[0].shop_address}</Text>
         ) : (
-          <Text>No shop information available</Text>
+          <Text style={styles.text5}>No shop information available</Text>
         )}
       </View>
       <View style={styles.round2}>
@@ -94,7 +101,7 @@ export default function Profile({ navigation }) {
             </Text>
           </>
         ) : (
-          <Text>No Shop information available</Text>
+          <Text style={styles.text8}>No Shop information available</Text>
         )}
       </View>
       <TouchableOpacity

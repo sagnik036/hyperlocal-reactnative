@@ -5,6 +5,8 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  RefreshControl,
+  ScrollView,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Button, IconButton } from "react-native-paper";
@@ -16,6 +18,9 @@ const { height, width } = Dimensions.get("window");
 export default function Home({ navigation }) {
   const { userInfo } = useContext(Authcontext);
   const [shopinfo, setShopinfo] = useState(null);
+  const [livejob, SetLiveJob] = useState(null);
+  const [jobid, Setjobid] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const shopid = userInfo.data.id;
   const shoptoken = userInfo.token.access;
   const apicall = () => {
@@ -34,9 +39,65 @@ export default function Home({ navigation }) {
         console.log(err);
       });
   };
+
+  const showLiveJob = () => {
+    axios
+      .get(`${API_URl}/live-jobsuser/`, {
+        headers: {
+          Authorization: `Bearer ${shoptoken}`,
+        },
+      })
+      .then((res) => {
+        let livejob = res.data;
+        console.log(livejob);
+        SetLiveJob(livejob);
+        Setjobid(livejob.data.job_id);
+        //console.log(livejob.data.job_id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const CancelJob = () => {
+    //console.log(jobid);
+    axios
+      .post(
+        `${API_URl}/cancel-job/`,
+        {
+          job_id: jobid,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${shoptoken}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.status.code === 403) {
+          alert("You can not delete if your job is in process");
+        } else {
+          alert("Job Cancelled!");
+        }
+        console.log(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
   useEffect(() => {
     apicall();
   }, []);
+
+  useEffect(() => {
+    showLiveJob();
+  }, []);
+  const onRefresh = () => {
+    setRefreshing(true);
+    showLiveJob();
+    setRefreshing(false);
+  };
+
   return (
     <View style={styles.container}>
       <IconButton
@@ -87,9 +148,61 @@ export default function Home({ navigation }) {
       )}
 
       <Text style={styles.CurrentPost}>Current Post</Text>
-
-      <Text style={styles.currentdetail}>No posts yet</Text>
-
+      <View style={styles.livejobContainer}>
+        {livejob && livejob.data ? (
+          <>
+            <Image
+              source={{ uri: livejob.data.photo_1 }}
+              style={styles.livejobImage}
+            />
+            <View style={{ bottom: 10 }}>
+              <Text style={styles.Descriptionlivejob}>
+                Deliverable : {livejob.data.name}
+              </Text>
+              <Text style={styles.Descriptionlivejob}>
+                Description : {livejob.data.description}
+              </Text>
+              {livejob.data.shop_data ? (
+                <Text style={styles.Descriptionlivejob}>
+                  Shop Name : {livejob.data.shop_data.shop_name}
+                </Text>
+              ) : (
+                <Text style={styles.Descriptionlivejob}>
+                  Your Name : {livejob.data.pickup_contact_name}
+                </Text>
+              )}
+              <Text style={styles.Descriptionlivejob}>
+                Customer Name : {livejob.data.delivery_contact_name}
+              </Text>
+              <Text
+                style={[
+                  styles.statusText,
+                  livejob.data.status === "Processing"
+                    ? styles.processing
+                    : livejob.data.status === "Picking"
+                    ? styles.picking
+                    : styles.completed,
+                ]}
+              >
+                <Text style={{ color: "black", fontWeight: "bold" }}>
+                  Status{" "}
+                </Text>
+                : {livejob.data.status}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.CancelJob}
+              onPress={() => CancelJob()}
+            >
+              <Text style={{ color: "white", textAlign: "center" }}>
+                Cancel Job
+              </Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Text style={styles.currentdetail}>No posts yet</Text>
+        )}
+      </View>
       <Button
         icon="pencil"
         mode="elevated"
@@ -177,7 +290,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     left: width / 11,
-    top: width / 1.4,
+    top: width / 1.5,
     fontSize: 18,
     color: "black",
     fontWeight: "600",
@@ -202,5 +315,44 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     elevation: 50,
     backgroundColor: "#FF0606",
+  },
+  livejobImage: {
+    resizeMode: "contain",
+    height: height / 3,
+    width: width / 3,
+    bottom: -25,
+  },
+  livejobContainer: {
+    top: 25,
+  },
+  Descriptionlivejob: {
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 3,
+    textAlign: "left",
+    width: width / 1.3,
+  },
+  statusText: {
+    fontSize: 16,
+  },
+  processing: {
+    color: "red",
+  },
+  picking: {
+    color: "#ebc934",
+  },
+  completed: {
+    color: "green",
+  },
+  CancelJob: {
+    //justifyContent: "center",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#F02121",
+    height: width / 10,
+    width: width / 4,
+    marginTop: 5,
+    marginBottom: 5,
+    right: width / 150,
   },
 });

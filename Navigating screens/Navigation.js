@@ -16,8 +16,7 @@ import ResetPassword from "../src/Login/ResetPassword";
 import Shopdetails from "../src/Register/Proprietor/Shopdetails";
 import Livelocation from "../src/Register/Proprietor/Livelocation";
 import JobDetails from "../src/Postlogin/Delivery Person Screens/JobDetails";
-
-
+import OTPLogin from "../src/Login/OTPLogin";
 
 export default function Navigation() {
   const Stack = createNativeStackNavigator();
@@ -80,6 +79,11 @@ export default function Navigation() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="otplogin"
+              component={OTPLogin}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="forgetpass"
               component={ForgetPassword}
               options={{ headerShown: false }}
@@ -101,7 +105,6 @@ export default function Navigation() {
           component={JobDetails}
           options={{ headerShown: false }}
         />
-         
       </Stack.Navigator>
     </NavigationContainer>
   );

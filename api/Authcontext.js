@@ -191,6 +191,39 @@ export const AuthProvider = ({ children, navigation }) => {
       });
   };
 
+  //OTP Login Authentication,
+  const OTPlogin = (mobilenumber, otp) => {
+    SetIsLoading(true);
+    axios
+      .post(
+        `${API_URl}/login/`,
+        {
+          mobile_number: "+91" + mobilenumber,
+          otp: otp,
+          token: otptoken,
+        },
+        {
+          headers: {
+            Authorization: "No Auth",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data.status.message);
+        let userInfo = res.data;
+        setUserInfo(userInfo);
+        SetUser(userInfo.data.user_type);
+        setUserToken(userInfo.token.access);
+        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        AsyncStorage.setItem("userToken", userInfo.token.access);
+        SetIsLoading(false);
+      })
+      .catch((e) => {
+        alert("Invalid Email or Password");
+        console.log(e);
+        SetIsLoading(false);
+      });
+  };
   //Logout Authentication
   const logout = () => {
     SetIsLoading(true);
@@ -347,6 +380,7 @@ export const AuthProvider = ({ children, navigation }) => {
         jobid,
         ValidatePickup,
         ValidateDelivery,
+        OTPlogin,
       }}
     >
       {children}

@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignItems: "center",
     display: "flex",
-    width: 117,
+    width: width / 2,
     height: 22,
     left: width / 3.3,
     top: width / 2.34,

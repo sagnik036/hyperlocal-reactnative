@@ -56,7 +56,7 @@ export default function Login({ navigation }) {
       />
       <TouchableOpacity
         style={styles.nextBtn2}
-        onPress={() => Requestotp(mobilenumber, otp)}
+        onPress={() => navigation.navigate("otplogin")}
       >
         <Text style={styles.nextStyle}>Request OTP</Text>
       </TouchableOpacity>
