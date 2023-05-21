@@ -25,6 +25,7 @@ export const AuthProvider = ({ children, navigation }) => {
 
   const JobId = (jobid) => {
     SetJobId(jobid);
+    AsyncStorage.setItem("jobid", jobid);
   };
 
   //CommonRegister Authentication
@@ -110,52 +111,6 @@ export const AuthProvider = ({ children, navigation }) => {
           SetIsLoading(false);
         });
     }
-  };
-
-  const RegisterShopData = (
-    shop_name,
-    shop_shortdescribtion,
-    shop_describtion,
-    shop_address,
-    shop_gst,
-    location_longitude,
-    location_latitude
-  ) => {
-    const locationstring = `POINT(${location_longitude} ${location_latitude})`;
-    console.log(
-      shop_name,
-      shop_shortdescribtion,
-      shop_describtion,
-      shop_address,
-      shop_gst,
-      locationstring
-    );
-    SetIsLoading(true);
-    axios
-      .post(
-        `${API_URl}/shopdata/`,
-        {
-          shop_name: shop_name,
-          shop_shortdescribtion: shop_shortdescribtion,
-          shop_describtion: shop_describtion,
-          shop_address: shop_address,
-          shop_gst: shop_gst,
-          location: locationstring,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${DeliveryAccess}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.warn(res.data);
-        SetIsLoading(false);
-      })
-      .catch((error) => {
-        console.warn(error.status.detail);
-        SetIsLoading(false);
-      });
   };
 
   //Login Authentication,
@@ -374,7 +329,6 @@ export const AuthProvider = ({ children, navigation }) => {
         userInfo,
         DeliveryAccess,
         otptoken,
-        RegisterShopData,
         DeleteAcc,
         JobId,
         jobid,
