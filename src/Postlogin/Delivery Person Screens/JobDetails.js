@@ -63,8 +63,14 @@ export default function JobDetails({ route }) {
         }
       )
       .then((res) => {
-        console.log(res.data);
-        alert("You Have Accepted The Job, Go To Home Screen For More Details");
+        if (res.data.status.code === 403) {
+          alert(res.data.status.message);
+        } else {
+          console.log(res.data);
+          alert(
+            "You Have Accepted The Job, Go To Home Screen For More Details"
+          );
+        }
       })
       .catch((err) => {
         alert("This Job Has Been Accepted Already");

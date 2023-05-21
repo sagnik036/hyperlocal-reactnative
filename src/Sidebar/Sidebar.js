@@ -1,7 +1,6 @@
 import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Help from "../Postlogin/Proprietor Screens/Help";
-import Settings from "../Postlogin/Proprietor Screens/Settings";
 import Home from "../Proprietor/Home";
 import CustomDrawer from "./CustomDrawer";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,7 +10,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import JobApplicants from "../Postlogin/Proprietor Screens/JobApplicants";
 import PostedJobs from "../Postlogin/Proprietor Screens/PostedJobs";
-import ChangeLang from "../Postlogin/Proprietor Screens/ChangeLang";
 import Profile from "../Postlogin/Proprietor Screens/Profile";
 
 const Drawer = createDrawerNavigator();

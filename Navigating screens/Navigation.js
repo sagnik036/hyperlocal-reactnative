@@ -106,7 +106,7 @@ export default function Navigation() {
           component={JobDetails}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Transaction History"
           component={History}
           options={{ headerShown: false }}

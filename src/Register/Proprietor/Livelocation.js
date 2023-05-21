@@ -4,9 +4,10 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import React, { useContext, useState } from "react";
-import MapView, { Marker } from "react-native-maps";
+//import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Button, TextInput } from "react-native-paper";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -34,6 +35,8 @@ export default function Livelocation({ navigation, route }) {
       SetError("Enter your Shop Address");
     } else if (lat == "") {
       SetError("Please tap the current location button to put your address");
+    } else if (longitude === "" && lat === "") {
+      SetError("Press Current Location Button to get Location");
     } else {
       // RegisterShopData(
       //   route.params.sname,
@@ -128,13 +131,24 @@ export default function Livelocation({ navigation, route }) {
         console.log(err);
       });
   };
+  const openGoogleMaps = (latitude, longitude) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+
+    Linking.openURL(url);
+  };
   return (
     <View style={styles.container}>
+      <Spinner color="red" visible={isloading} />
       <Text style={styles.text1}>Create Account</Text>
       <Text style={styles.text2}>
         Sign up to post new jobs and get items delivered
       </Text>
       <Text style={styles.Allert}>{error}</Text>
+      {error === "Press Current Location Button to get Location" ? (
+        <Text style={styles.Allert}>Check Your Location Now</Text>
+      ) : (
+        <Text></Text>
+      )}
       <TextInput
         placeholder="Enter Shop Address"
         mode="outlined"
@@ -145,7 +159,7 @@ export default function Livelocation({ navigation, route }) {
         onChangeText={(value) => setShopaddress(value)}
         style={styles.textinput}
       />
-      <Spinner color="red" visible={isloading} />
+
       <TouchableOpacity
         style={styles.Shopphoto}
         onPress={() => pickImageFront()}
@@ -153,7 +167,7 @@ export default function Livelocation({ navigation, route }) {
         <Text style={styles.ButtonText}>Add a Shop Photo</Text>
       </TouchableOpacity>
       <Button
-        style={{ margin: 10, top: -15 }}
+        style={{ margin: 10, bottom: width / 10 }}
         onPress={userLocation}
         icon="map-marker-radius-outline"
         buttonColor="red"
@@ -162,7 +176,7 @@ export default function Livelocation({ navigation, route }) {
         Current Location
       </Button>
       {/* <Mapbox.MapView reg></Mapbox.MapView> */}
-      <MapView
+      {/* <MapView
         style={styles.map}
         region={mapRegion}
         initialRegion={{
@@ -173,8 +187,22 @@ export default function Livelocation({ navigation, route }) {
         }}
       >
         {lat && <Marker coordinate={mapRegion} title="Hi, there" />}
-      </MapView>
-
+      </MapView> */}
+      <TouchableOpacity
+        style={styles.Dropbutton}
+        onPress={() => openGoogleMaps(lat, longitude)}
+      >
+        <Text
+          style={{
+            textAlign: "center",
+            color: "white",
+            fontWeight: "700",
+            fontSize: 20,
+          }}
+        >
+          Check your Location Here
+        </Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.Button} onPress={() => validation()}>
         <Text style={styles.ButtonText}>Create Account</Text>
       </TouchableOpacity>
@@ -195,11 +223,11 @@ const styles = StyleSheet.create({
     width: 320,
     height: 40,
     margin: 10,
-    top: -20,
+    bottom: width / 5,
   },
 
   text1: {
-    bottom: height / 35,
+    bottom: height / 5,
     textAlign: "center",
     fontFamily: "Roboto",
     fontSize: 30,
@@ -207,7 +235,7 @@ const styles = StyleSheet.create({
   },
 
   text2: {
-    bottom: height / 35,
+    bottom: height / 6,
     textAlign: "center",
     fontFamily: "serif",
     fontSize: 15,
@@ -228,7 +256,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: width / 1.2,
     height: width / 8,
-    top: height / 50,
+    top: height / 6,
   },
   ButtonText: {
     color: "white",
@@ -237,7 +265,7 @@ const styles = StyleSheet.create({
   Allert: {
     color: "red",
     textDecorationLine: "underline",
-    bottom: height / 60,
+    bottom: height / 10,
     fontWeight: "bold",
   },
   Shopphoto: {
@@ -249,6 +277,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: width / 1.2,
     height: width / 8,
-    top: height / -80,
+    bottom: height / 15,
+  },
+  Dropbutton: {
+    justifyContent: "center",
+    //padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#F02121",
+    height: width / 7,
+    width: width / 1.2,
+    marginTop: 5,
+    marginBottom: 5,
+    right: height / 150,
+    bottom: width / 20,
   },
 });
