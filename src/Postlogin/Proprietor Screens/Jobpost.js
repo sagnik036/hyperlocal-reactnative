@@ -10,6 +10,7 @@ import {
   TextInput,
   Modal,
   Button,
+  Dimensions,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { Calendar } from "react-native-calendars";
@@ -22,6 +23,7 @@ import axios from "axios";
 import { API_TOKEN, API_URL } from "@env";
 import { Authcontext } from "../../../api/Authcontext";
 import Spinner from "react-native-loading-spinner-overlay";
+const { height, width } = Dimensions.get("window");
 
 export default function Jobpost() {
   const { userInfo } = useContext(Authcontext);
@@ -59,6 +61,7 @@ export default function Jobpost() {
   const [pickupname, SetpickupName] = useState(null);
   const [pickupphone, SetpickupPhone] = useState(null);
   const [isloading, SetIsloading] = useState(false);
+  const [error, Seterror] = useState("");
 
   const handleDayPress = (date) => {
     setSelectedDate(date);
@@ -159,6 +162,24 @@ export default function Jobpost() {
   // console.log(name);
   // console.log(Phone);
   // };
+
+  const Validation = (lat, latDel, longitude, longitudeDel) => {
+    if (
+      lat === "" &&
+      longitude === "" &&
+      latDel === "" &&
+      longitudeDel === ""
+    ) {
+      Seterror("Press Button for Location!");
+    } else if (lat === "" && longitude === "") {
+      Seterror("Please Press Get Pickup Location Button");
+    } else if (latDel === "" && longitudeDel === "") {
+      Seterror("Please Press Get Pickup Location Button");
+    } else {
+      Seterror("We Got The Location");
+      SubmitJobPost(lat, latDel, longitude, longitudeDel, date, time);
+    }
+  };
 
   const SubmitJobPost = (lat, latDel, longitude, longitudeDel, date, time) => {
     const bearertoken = userInfo.token.access;
@@ -357,7 +378,7 @@ export default function Jobpost() {
               }}
             />
           </Modal>
-
+          <Text style={styles.error}>{error}</Text>
           <View style={styles.dropdown2}>
             <Text style={{ top: 35, height: 17, right: 95 }}>Vehicle</Text>
             <SelectList
@@ -406,7 +427,7 @@ export default function Jobpost() {
           <TouchableOpacity
             style={styles.Button}
             onPress={() =>
-              SubmitJobPost(
+              Validation(
                 lat,
                 latDel,
                 longitude,
@@ -647,5 +668,10 @@ const styles = StyleSheet.create({
     margin: 10,
     right: -3,
     marginHorizontal: "auto",
+  },
+  error: {
+    color: "red",
+    top: height / -4,
+    textAlign: "center",
   },
 });

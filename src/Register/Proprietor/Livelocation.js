@@ -10,17 +10,22 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Button, TextInput } from "react-native-paper";
 import Spinner from "react-native-loading-spinner-overlay";
+import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
+import { API_URl } from "@env";
 import { Authcontext } from "../../../api/Authcontext";
 
 const { height, width } = Dimensions.get("window");
 
 export default function Livelocation({ navigation, route }) {
+  const { DeliveryAccess } = useContext(Authcontext);
   const [mapRegion, setMapRegion] = useState({});
   const [lat, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [shopAddress, setShopaddress] = useState("");
   const [error, SetError] = useState("");
-  const { isLoading, RegisterShopData } = useContext(Authcontext);
+  const [photoFront, SetPhotoFront] = useState(null);
+  const [isloading, Setloading] = useState(false);
 
   const validation = () => {
     if (shopAddress == "" && lat == "") {
@@ -30,17 +35,34 @@ export default function Livelocation({ navigation, route }) {
     } else if (lat == "") {
       SetError("Please tap the current location button to put your address");
     } else {
-      Handlenavigation();
-      RegisterShopData(
-        route.params.sname,
-        route.params.ssdes,
-        route.params.sdes,
-        shopAddress,
-        route.params.sgst,
-        longitude,
-        lat
-      );
+      // RegisterShopData(
+      //   route.params.sname,
+      //   route.params.ssdes,
+      //   route.params.sdes,
+      //   shopAddress,
+      //   route.params.sgst,
+      //   longitude,
+      //   lat
+      // );
+      UploadData(longitude, lat);
       return true;
+    }
+  };
+
+  //Pick Image Front
+  const pickImageFront = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    //console.log(result);
+
+    if (!result.cancelled) {
+      SetPhotoFront(result.uri);
     }
   };
 
@@ -56,18 +78,55 @@ export default function Livelocation({ navigation, route }) {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       alert("Permission to access location was denied");
+    } else {
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+      });
+      setMapRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.000918,
+        longitudeDelta: 0.000418,
+      });
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
     }
-    let location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Highest,
+  };
+
+  const UploadData = async (longitude, lat) => {
+    let formDataShop = new FormData();
+    const locate = `POINT(${longitude} ${lat})`;
+    console.log(locate);
+    formDataShop.append("shop_name", route.params.sname);
+    formDataShop.append("shop_shortdescribtion", route.params.ssdes);
+    formDataShop.append("shop_describtion", route.params.sdes);
+    formDataShop.append("shop_address", shopAddress);
+    formDataShop.append("shop_gst", route.params.sgst);
+    formDataShop.append("location", locate);
+    formDataShop.append("shop_photo", {
+      uri:
+        Platform.OS === "android"
+          ? photoFront
+          : photoFront.replace("file://", ""),
+      name: "shopPhoto.jpg",
+      type: "image/jpeg",
     });
-    setMapRegion({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 0.000918,
-      longitudeDelta: 0.000418,
-    });
-    setLatitude(location.coords.latitude);
-    setLongitude(location.coords.longitude);
+    Setloading(true);
+    axios
+      .post(`${API_URl}/shopdata/`, formDataShop, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${DeliveryAccess}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.status.detail);
+        Setloading(false);
+        Handlenavigation();
+      })
+      .then((err) => {
+        console.log(err);
+      });
   };
   return (
     <View style={styles.container}>
@@ -86,7 +145,13 @@ export default function Livelocation({ navigation, route }) {
         onChangeText={(value) => setShopaddress(value)}
         style={styles.textinput}
       />
-      <Spinner color="red" visible={isLoading} />
+      <Spinner color="red" visible={isloading} />
+      <TouchableOpacity
+        style={styles.Shopphoto}
+        onPress={() => pickImageFront()}
+      >
+        <Text style={styles.ButtonText}>Add a Shop Photo</Text>
+      </TouchableOpacity>
       <Button
         style={{ margin: 10, top: -15 }}
         onPress={userLocation}
@@ -134,7 +199,7 @@ const styles = StyleSheet.create({
   },
 
   text1: {
-    bottom: height / 25,
+    bottom: height / 35,
     textAlign: "center",
     fontFamily: "Roboto",
     fontSize: 30,
@@ -142,7 +207,7 @@ const styles = StyleSheet.create({
   },
 
   text2: {
-    bottom: height / 25,
+    bottom: height / 35,
     textAlign: "center",
     fontFamily: "serif",
     fontSize: 15,
@@ -174,5 +239,16 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     bottom: height / 60,
     fontWeight: "bold",
+  },
+  Shopphoto: {
+    borderRadius: 12,
+    backgroundColor: "red",
+    padding: 10,
+    margin: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    width: width / 1.2,
+    height: width / 8,
+    top: height / -80,
   },
 });

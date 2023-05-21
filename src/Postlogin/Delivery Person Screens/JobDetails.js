@@ -176,7 +176,7 @@ export default function JobDetails({ route }) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.Pickupbutton}
+              style={styles.Dropbutton}
               onPress={() =>
                 openGoogleMaps(
                   data.data.delivery_location.coordinates[1],
@@ -201,7 +201,7 @@ export default function JobDetails({ route }) {
         )}
         <View style={{ height: 20, width: 20 }} />
         <TouchableOpacity
-          style={styles.Pickupbutton}
+          style={styles.AccrptButton}
           onPress={() => acceptjob()}
         >
           <Text
@@ -250,6 +250,30 @@ const styles = StyleSheet.create({
     width: width / 1.26,
   },
   Pickupbutton: {
+    justifyContent: "center",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#F02121",
+    height: width / 7,
+    width: width / 2.5,
+    marginTop: 5,
+    marginBottom: 5,
+    left: width / 14,
+    bottom: width / -10,
+  },
+  Dropbutton: {
+    justifyContent: "center",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#F02121",
+    height: width / 7,
+    width: width / 2.5,
+    marginTop: 5,
+    marginBottom: 5,
+    left: width / 1.8,
+    bottom: width / 14,
+  },
+  AccrptButton: {
     justifyContent: "center",
     padding: 10,
     borderRadius: 10,
