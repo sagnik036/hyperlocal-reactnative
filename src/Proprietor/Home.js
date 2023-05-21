@@ -20,7 +20,6 @@ export default function Home({ navigation }) {
   const [shopinfo, setShopinfo] = useState(null);
   const [livejob, SetLiveJob] = useState(null);
   const [jobid, Setjobid] = useState("");
-  const [refreshing, setRefreshing] = useState(false);
   const shopid = userInfo.data.id;
   const shoptoken = userInfo.token.access;
   const apicall = () => {
@@ -49,7 +48,7 @@ export default function Home({ navigation }) {
       })
       .then((res) => {
         let livejob = res.data;
-        console.log(livejob);
+        //console.log(livejob);
         SetLiveJob(livejob);
         Setjobid(livejob.data.job_id);
         //console.log(livejob.data.job_id);
@@ -91,12 +90,12 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     showLiveJob();
+    const interval = setInterval(() => {
+      showLiveJob();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
-  const onRefresh = () => {
-    setRefreshing(true);
-    showLiveJob();
-    setRefreshing(false);
-  };
 
   return (
     <View style={styles.container}>

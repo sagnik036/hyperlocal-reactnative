@@ -163,7 +163,7 @@ export default function Jobpost() {
   // console.log(Phone);
   // };
 
-  const Validation = (lat, latDel, longitude, longitudeDel) => {
+  const Validation = (lat, latDel, longitude, longitudeDel, date, time) => {
     if (
       lat === "" &&
       longitude === "" &&
@@ -229,9 +229,13 @@ export default function Jobpost() {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        alert("Job Added");
-        SetIsloading(false);
+        if (res.data.status.code === 403) {
+          alert(res.data.status.message);
+          SetIsloading(false);
+        } else {
+          alert("Job Added!");
+          SetIsloading(false);
+        }
       })
       .catch((err) => {
         alert("You cannot send job");

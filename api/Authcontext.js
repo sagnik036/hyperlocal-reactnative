@@ -192,10 +192,9 @@ export const AuthProvider = ({ children, navigation }) => {
   const GetOtp = (mobile_number) => {
     SetIsLoading(true);
     axios
-      .get(`${API_URl}/otp/?mobile_number=${"91" + mobile_number}`, {
-        mobile_number: mobile_number,
-      })
+      .get(`${API_URl}/otp/?mobile_number=${"91" + mobile_number}`)
       .then((res) => {
+        console.log(mobile_number);
         let otptoken = res.data.data.token;
         SetOtpToken(otptoken);
         SetIsLoading(false);

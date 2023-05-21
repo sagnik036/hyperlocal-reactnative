@@ -91,10 +91,15 @@ export default function Feed({ navigation }) {
                 <Text style={{ fontSize: 20, fontWeight: "600", left: 10 }}>
                   Deliverable : {item.name}
                 </Text>
-                <Text style={{ fontSize: 15, left: 10 }}>
-                  Shop name:{" "}
-                  {item.shop_data ? item.shop_data.shop_name : "No Shop"}
-                </Text>
+                {item.shop_data ? (
+                  <Text style={{ fontSize: 15, left: 10 }}>
+                    Shop name: {item.shop_data.shop_name}
+                  </Text>
+                ) : (
+                  <Text style={{ fontSize: 15, left: 10 }}>
+                    Customer name: {item.delivery_contact_name}
+                  </Text>
+                )}
                 {/* <Text>Owner: {item.shop_data.user.first_name} {item.shop_data.user.last_name}</Text> */}
                 <Text style={{ fontSize: 15, left: 10 }}>
                   Item Quantity: {item.quantity}
@@ -105,6 +110,9 @@ export default function Feed({ navigation }) {
                 <Text style={{ fontSize: 15, left: 10, width: 200 }}>
                   Estimated Duration:{" "}
                   {getFormattedDuration(item.estimated_duration)}
+                </Text>
+                <Text style={{ fontSize: 15, left: 10 }}>
+                  Delivery Fee : {"\u20B9"} {item.delivery_boy_fee}
                 </Text>
                 <TouchableOpacity
                   style={{
