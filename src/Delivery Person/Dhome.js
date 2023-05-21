@@ -18,6 +18,7 @@ export default function Dhome({ navigation }) {
   const { userInfo } = useContext(Authcontext);
   const [cInfo, setcInfo] = useState(null);
   const [wheelType, setwheelType] = useState(null);
+  const [livedelivery, SetLivedelivery] = useState(null);
   const vToken = userInfo.token.access;
   const vId = userInfo.data.id;
   const vType = () => {
@@ -52,12 +53,31 @@ export default function Dhome({ navigation }) {
         alert("not found");
       });
   };
+  const showLivedelivery = () => {
+    axios
+      .get(`${API_URl}/live-jobsuser/`, {
+        headers: {
+          Authorization: `Bearer ${vToken}`,
+        },
+      })
+      .then((res) => {
+        let livejob = res.data;
+        //console.log(livejob);
+        SetLivedelivery(livejob);
+      })
+      .catch((err) => {
+        alert("No Job Posted");
+      });
+  };
   useEffect(() => {
     vInfo();
   }, []);
   useEffect(() => {
     vType();
   }, [cInfo]);
+  useEffect(() => {
+    showLivedelivery();
+  }, []);
   return (
     <View style={styles.container}>
       <IconButton
@@ -104,8 +124,61 @@ export default function Dhome({ navigation }) {
         />
       )}
       <Text style={styles.Delivery}>Current Delivery</Text>
-
-      <Text style={styles.currentdetails}>Not applied for any job yet</Text>
+      <View style={styles.livejobContainer}>
+        {livedelivery ? (
+          <>
+            <Image
+              source={{ uri: livedelivery.data.photo_1 }}
+              style={styles.livejobImage}
+            />
+            <View style={{ bottom: 10 }}>
+              <Text style={styles.Descriptionlivejob}>
+                Deliverable : {livedelivery.data.name}
+              </Text>
+              <Text style={styles.Descriptionlivejob}>
+                Description : {livedelivery.data.description}
+              </Text>
+              {livedelivery.data.shop_data ? (
+                <Text style={styles.Descriptionlivejob}>
+                  Shop Name : {livedelivery.data.shop_data.shop_name}
+                </Text>
+              ) : (
+                <Text style={styles.Descriptionlivejob}>
+                  Your Name : {livedelivery.data.pickup_contact_name}
+                </Text>
+              )}
+              <Text style={styles.Descriptionlivejob}>
+                Customer Name : {livedelivery.data.delivery_contact_name}
+              </Text>
+              <Text
+                style={[
+                  styles.statusText,
+                  livedelivery.data.status === "Processing"
+                    ? styles.processing
+                    : livedelivery.data.status === "Picking"
+                    ? styles.picking
+                    : styles.completed,
+                ]}
+              >
+                <Text style={{ color: "black", fontWeight: "bold" }}>
+                  Status{" "}
+                </Text>
+                : {livedelivery.data.status}
+              </Text>
+            </View>
+            <TouchableOpacity style={styles.CancelJob}
+            onPress={() =>navigation.navigate("Delivery Jobdetails",{paramKey:livedelivery.data.job_id})}
+            >
+              <Text style={{ color: "white", textAlign: "center" }}>
+                Job Details
+              </Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+        <Text style={styles.currentdetails}>Not applied for any job yet</Text>
+        )}
+      </View>
+      
     </View>
   );
 }
@@ -200,5 +273,49 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#5C5C5C",
     fontWeight: "200",
+  },
+  productname:{
+    position: "absolute",
+    alignItems: "center",
+    top: width/3,
+  },
+  livejobImage: {
+    resizeMode: "contain",
+    height: height / 3,
+    width: width / 3,
+    bottom: -25,
+  },
+  livejobContainer: {
+    top: 25,
+  },
+  Descriptionlivejob: {
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 3,
+    textAlign: "left",
+    width: 200,
+  },
+  statusText: {
+    fontSize: 16,
+  },
+  processing: {
+    color: "red",
+  },
+  picking: {
+    color: "#ebc934",
+  },
+  completed: {
+    color: "green",
+  },
+  CancelJob: {
+    //justifyContent: "center",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#F02121",
+    height: width / 10,
+    width: width / 4,
+    marginTop: 5,
+    marginBottom: 5,
+    right: width / 150,
   },
 });
