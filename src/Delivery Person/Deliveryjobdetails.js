@@ -7,11 +7,12 @@ import {
     Linking,
     TouchableOpacity,
     ScrollView,
+    TextInput
   } from "react-native";
   import React, { useContext, useEffect, useState } from "react";
   import { API_URl } from "@env";
   import axios from "axios";
-import { Authcontext } from "../../api/Authcontext";
+  import { Authcontext } from "../../api/Authcontext";
   
   const { height, width } = Dimensions.get("window");
   export default function Deliveryjobdetails({ route }) {
@@ -21,6 +22,7 @@ import { Authcontext } from "../../api/Authcontext";
     //const pickuplong = data.data.pickup_location.coordinates[1];
   
     const [data, setData] = useState(null);
+    const [otp, setOtp] = useState(null);
     const openGoogleMaps = (latitude, longitude) => {
       const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   
@@ -95,7 +97,7 @@ import { Authcontext } from "../../api/Authcontext";
                 Contact Customer : <Text>{data.data.delivery_contact_phone}</Text>
               </Text>
               <Text style={styles.AllDetailText}>
-                Delivery Fee : <Text>{data.data.delivery_boy_fee}</Text>
+                Delivery Fee : <Text>{"\u20B9"} {data.data.delivery_boy_fee}</Text>
               </Text>
               <Text style={styles.AllDetailText}>
                 Estimated Completion Time:{" "}
@@ -179,6 +181,54 @@ import { Authcontext } from "../../api/Authcontext";
           ) : (
             <Text>No job details available</Text>
           )}
+          <TextInput
+          style={styles.input}
+          keyboardType="default"
+          placeholder="Enter Otp"
+          value={otp}
+          onChangeText={(value) => setOtp(value)}
+        />
+        <TouchableOpacity
+        style={styles.sendotp}
+                onPress={() =>
+                  openGoogleMaps(
+                    data.data.pickup_location.coordinates[1],
+                    data.data.pickup_location.coordinates[0]
+                  )
+                }
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontWeight: "700",
+                    fontSize: 20,
+                  }}
+                >
+                  Send OTP to Customer
+                </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+        style={styles.Validatepickup}
+                onPress={() =>
+                  openGoogleMaps(
+                    data.data.pickup_location.coordinates[1],
+                    data.data.pickup_location.coordinates[0]
+                  )
+                }
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontWeight: "700",
+                    fontSize: 20,
+                  }}
+                >
+                  Validate Pickup
+                </Text>
+        </TouchableOpacity>
+        
           <View style={{ height: 20, width: 20 }} />
           
         </ScrollView>
@@ -225,6 +275,41 @@ import { Authcontext } from "../../api/Authcontext";
       marginTop: 5,
       marginBottom: 5,
       left: width / 10,
+    },
+    sendotp: {
+      justifyContent: "center",
+      padding: 10,
+      borderRadius: 10,
+      backgroundColor: "#F02121",
+      height: width / 9,
+      width: width / 4,
+      marginTop: 5,
+      marginBottom: 5,
+      left: width / 2.6,
+    },
+    Validatepickup: {
+      justifyContent: "center",
+      padding: 10,
+      borderRadius: 10,
+      backgroundColor: "#F02121",
+      height: width / 9,
+      width: width / 3,
+      marginTop: 5,
+      marginBottom: 5,
+      left: width / 2.9,
+    },
+    input: {
+      borderRadius: 20,
+      borderWidth: 1,
+      borderColor: "red",
+      backgroundColor: "white",
+      padding: 8,
+      width: 350,
+      height: 65,
+      marginTop: 15,
+      margin: 10,
+      left:width/14,
+      justifyContent: "center"
     },
   });
   
