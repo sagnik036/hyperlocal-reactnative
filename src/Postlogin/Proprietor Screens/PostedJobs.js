@@ -95,10 +95,23 @@ export default function PostedJobs({ navigation }) {
                 <Text style={{ fontSize: 15, left: 10 }}>
                   Delivery Distance: {item.delivery_distance}km
                 </Text>
+
                 <Text style={{ fontSize: 15, left: 10, width: 200 }}>
                   Estimated Duration:{" "}
                   {getFormattedDuration(item.estimated_duration)}
                 </Text>
+                {item.status === "Completed" ? (
+                  <>
+                    <Text style={{ fontSize: 15, left: 10 }}>
+                      Delivery Person Name : {item.delivery_boy_name}
+                    </Text>
+                    <Text style={{ fontSize: 15, left: 10 }}>
+                      Phone Number : {item.delivery_boy_number}
+                    </Text>
+                  </>
+                ) : (
+                  <Text></Text>
+                )}
                 <Text
                   style={[
                     styles.statusText,

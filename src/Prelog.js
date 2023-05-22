@@ -49,6 +49,7 @@ export default function Prelog({ navigation }) {
           <StatusBar style="auto" />
         </TouchableOpacity>
       </KeyboardAvoidingView>
+      <StatusBar hidden={false} />
     </View>
   );
 }

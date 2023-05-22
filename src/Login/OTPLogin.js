@@ -33,14 +33,6 @@ export default function OTPLogin({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <IconButton
-        onPress={() => navigation.openDrawer()}
-        icon="menu"
-        iconColor="black"
-        mode="contained"
-        size={30}
-        style={styles.menu}
-      />
       <Spinner color="red" visible={isLoading} />
       <Text style={styles.login}>Login</Text>
       <View style={styles.content}>

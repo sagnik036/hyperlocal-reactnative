@@ -69,7 +69,7 @@ export default function Feed({ navigation }) {
         size={30}
         style={styles.menu}
       />
-      {data ? (
+      {data && data.length > 0 ? (
         <View style={styles.flatlistc}>
           <FlatList
             data={data}
@@ -150,7 +150,15 @@ export default function Feed({ navigation }) {
           />
         </View>
       ) : (
-        <Text>No job available right now</Text>
+        <Text
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 20,
+          }}
+        >
+          No job available right now
+        </Text>
       )}
     </View>
   );

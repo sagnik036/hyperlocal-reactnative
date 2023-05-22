@@ -107,13 +107,13 @@ export default function Home({ navigation }) {
         style={styles.nav}
         onPress={() => navigation.openDrawer()}
       />
-      <IconButton
+      {/* <IconButton
         icon="bell"
         iconColor="white"
         mode="contained"
         size={14}
         style={styles.notification}
-      />
+      /> */}
       <Text style={styles.name}>
         {userInfo.data.first_name} {userInfo.data.last_name}
       </Text>
@@ -173,12 +173,31 @@ export default function Home({ navigation }) {
               <Text style={styles.Descriptionlivejob}>
                 Customer Name : {livejob.data.delivery_contact_name}
               </Text>
+              {livejob.data.status === "Picking" ||
+              livejob.data.status === "Delivering" ? (
+                <>
+                  <Text style={styles.Descriptionlivejob}>
+                    Delivery Person Name :{" "}
+                    {livejob.data.delivery_person.first_name}{" "}
+                    {livejob.data.delivery_person.last_name}
+                    {"\n"}
+                    <Text style={styles.Descriptionlivejob}>
+                      Phone Number :{" "}
+                      {livejob.data.delivery_person.mobile_number}
+                    </Text>
+                  </Text>
+                </>
+              ) : (
+                <Text></Text>
+              )}
               <Text
                 style={[
                   styles.statusText,
                   livejob.data.status === "Processing"
                     ? styles.processing
                     : livejob.data.status === "Picking"
+                    ? styles.picking
+                    : livejob.data.status === "Delivering"
                     ? styles.picking
                     : styles.completed,
                 ]}

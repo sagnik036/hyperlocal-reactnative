@@ -100,7 +100,7 @@ export default function Deliveries({ navigation }) {
                   Delivery Distance : {item.delivery_distance}km
                 </Text>
                 <Text style={{ fontSize: 15, left: 10, width: 200 }}>
-                  Job Fee : INR {item.delivery_boy_fee}
+                  Job Fee : {"\u20B9"} {item.delivery_boy_fee}
                 </Text>
                 <Text
                   style={[

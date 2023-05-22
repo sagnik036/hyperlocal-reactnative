@@ -194,11 +194,11 @@ export const AuthProvider = ({ children, navigation }) => {
     axios
       .get(`${API_URl}/otp/?mobile_number=${"91" + mobile_number}`)
       .then((res) => {
-        console.log(mobile_number);
+        //console.log(mobile_number);
         let otptoken = res.data.data.token;
         SetOtpToken(otptoken);
         SetIsLoading(false);
-        console.log(res.data.data.token);
+        //console.log(res.data.data.token);
       })
       .catch((e) => {
         console.log(e);
@@ -313,6 +313,40 @@ export const AuthProvider = ({ children, navigation }) => {
       });
   };
 
+  const GetPropOTP = (mobilenumber) => {
+    SetIsLoading(true);
+    axios
+      .get(`${API_URl}/otp/?mobile_number=${mobilenumber}`)
+      .then((res) => {
+        console.log(mobilenumber);
+        //let otptoken = res.data.data.token;
+        SetOtpToken(res.data.data.token);
+        console.log(otptoken);
+        SetIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        SetIsLoading(false);
+      });
+  };
+
+  const GetDelOTP = (mobilenumber) => {
+    SetIsLoading(true);
+    axios
+      .get(`${API_URl}/otp/?mobile_number=${mobilenumber}`)
+      .then((res) => {
+        //console.log(mobile_number);
+        //let delotp = res.data.data.token;
+        SetOtpToken(res.data.data.token);
+        SetIsLoading(false);
+        //console.log(res.data.data.token);
+      })
+      .catch((e) => {
+        console.log(e);
+        SetIsLoading(false);
+      });
+  };
+
   return (
     <Authcontext.Provider
       value={{
@@ -334,6 +368,8 @@ export const AuthProvider = ({ children, navigation }) => {
         ValidatePickup,
         ValidateDelivery,
         OTPlogin,
+        GetPropOTP,
+        GetDelOTP,
       }}
     >
       {children}

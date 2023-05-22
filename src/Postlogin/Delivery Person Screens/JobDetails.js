@@ -121,7 +121,10 @@ export default function JobDetails({ route }) {
               Contact Customer : <Text>{data.data.delivery_contact_phone}</Text>
             </Text>
             <Text style={styles.AllDetailText}>
-              Delivery Fee : <Text>{data.data.delivery_boy_fee}</Text>
+              Delivery Fee :{" "}
+              <Text>
+                {"\u20B9"} {data.data.delivery_boy_fee}
+              </Text>
             </Text>
             <Text style={styles.AllDetailText}>
               Estimated Completion Time:{" "}

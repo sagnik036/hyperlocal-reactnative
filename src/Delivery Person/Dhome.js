@@ -62,11 +62,11 @@ export default function Dhome({ navigation }) {
       })
       .then((res) => {
         let livejob = res.data;
-        //console.log(livejob);
+        console.log(livejob.status.message);
         SetLivedelivery(livejob);
       })
       .catch((err) => {
-        alert("No Job Posted");
+        console.log(err);
       });
   };
   useEffect(() => {
@@ -77,6 +77,11 @@ export default function Dhome({ navigation }) {
   }, [cInfo]);
   useEffect(() => {
     showLivedelivery();
+    const interval = setInterval(() => {
+      showLivedelivery();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
   return (
     <View style={styles.container}>
@@ -88,13 +93,13 @@ export default function Dhome({ navigation }) {
         size={30}
         style={styles.menu}
       />
-      <IconButton
+      {/* <IconButton
         icon="bell"
         iconColor="white"
         mode="contained"
         size={16}
         style={styles.notification}
-      />
+      /> */}
       <Text style={styles.Dname}>
         {userInfo.data.first_name} {userInfo.data.last_name}
       </Text>
@@ -125,7 +130,7 @@ export default function Dhome({ navigation }) {
       )}
       <Text style={styles.Delivery}>Current Delivery</Text>
       <View style={styles.livejobContainer}>
-        {livedelivery ? (
+        {livedelivery && livedelivery.data ? (
           <>
             <Image
               source={{ uri: livedelivery.data.photo_1 }}
@@ -166,8 +171,13 @@ export default function Dhome({ navigation }) {
                 : {livedelivery.data.status}
               </Text>
             </View>
-            <TouchableOpacity style={styles.CancelJob}
-            onPress={() =>navigation.navigate("Delivery Jobdetails",{paramKey:livedelivery.data.job_id})}
+            <TouchableOpacity
+              style={styles.CancelJob}
+              onPress={() =>
+                navigation.navigate("Delivery Jobdetails", {
+                  paramKey: livedelivery.data.job_id,
+                })
+              }
             >
               <Text style={{ color: "white", textAlign: "center" }}>
                 Job Details
@@ -175,10 +185,9 @@ export default function Dhome({ navigation }) {
             </TouchableOpacity>
           </>
         ) : (
-        <Text style={styles.currentdetails}>Not applied for any job yet</Text>
+          <Text style={styles.currentdetails}>Not applied for any job yet</Text>
         )}
       </View>
-      
     </View>
   );
 }
@@ -239,7 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 100,
     borderWidth: 2,
-    top: width / 5.2,
+    top: width / 5.5,
     right: width / 12,
   },
   Dprofilepic: {
@@ -274,10 +283,10 @@ const styles = StyleSheet.create({
     color: "#5C5C5C",
     fontWeight: "200",
   },
-  productname:{
+  productname: {
     position: "absolute",
     alignItems: "center",
-    top: width/3,
+    top: width / 3,
   },
   livejobImage: {
     resizeMode: "contain",
@@ -293,7 +302,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 3,
     textAlign: "left",
-    width: 200,
+    width: 300,
   },
   statusText: {
     fontSize: 16,
