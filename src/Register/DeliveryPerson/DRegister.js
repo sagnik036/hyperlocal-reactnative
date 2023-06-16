@@ -4,6 +4,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { TextInput } from "react-native-paper";
@@ -105,6 +106,7 @@ export default function DRegister({ navigation }) {
       <TouchableOpacity style={styles.Button} onPress={() => validation()}>
         <Text style={styles.ButtonText}>Create Account</Text>
       </TouchableOpacity>
+      <StatusBar hidden={false} />
     </View>
   );
 }

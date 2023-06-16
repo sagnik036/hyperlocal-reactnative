@@ -6,10 +6,12 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Linking,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 import { Authcontext } from "../../../api/Authcontext";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -24,7 +26,7 @@ export default function PostedJobs({ navigation }) {
   const postedJobAPI = () => {
     SetLoading(true);
     axios
-      .get(`${API_URl}/job-history/`, {
+      .get(`API_URl/job-history/`, {
         headers: {
           Authorization: `Bearer ${posttoken}`,
         },
@@ -49,6 +51,10 @@ export default function PostedJobs({ navigation }) {
   useEffect(() => {
     postedJobAPI();
   }, []);
+
+  const makePhoneCall = (phoneNumber) => {
+    Linking.openURL(`tel:${phoneNumber}`);
+  };
 
   return (
     <View style={styles.container}>
@@ -105,8 +111,19 @@ export default function PostedJobs({ navigation }) {
                     <Text style={{ fontSize: 15, left: 10 }}>
                       Delivery Person Name : {item.delivery_boy_name}
                     </Text>
-                    <Text style={{ fontSize: 15, left: 10 }}>
-                      Phone Number : {item.delivery_boy_number}
+                    <Text
+                      style={{ fontSize: 15, left: 10 }}
+                      onPress={() => makePhoneCall(item.delivery_boy_number)}
+                    >
+                      Phone Number :{" "}
+                      <Text
+                        style={{
+                          textDecorationLine: "underline",
+                          color: "#106ead",
+                        }}
+                      >
+                        {item.delivery_boy_number}
+                      </Text>
                     </Text>
                   </>
                 ) : (
@@ -115,7 +132,7 @@ export default function PostedJobs({ navigation }) {
                 <Text
                   style={[
                     styles.statusText,
-                    item.status === "Canceled"
+                    item.status === "Cancelled"
                       ? styles.processing
                       : item.status === "Picking"
                       ? styles.picking
@@ -145,6 +162,7 @@ export default function PostedJobs({ navigation }) {
           )}
         />
       </View> */}
+      <StatusBar hidden={false} />
     </View>
   );
 }

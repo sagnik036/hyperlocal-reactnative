@@ -11,6 +11,7 @@ import {
   Modal,
   Button,
   Dimensions,
+  Alert,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { Calendar } from "react-native-calendars";
@@ -20,12 +21,12 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useContext, useEffect, useState } from "react";
 import * as Location from "expo-location";
 import axios from "axios";
-import { API_TOKEN, API_URL } from "@env";
+//import { API_TOKEN, API_URL } from "@env";
 import { Authcontext } from "../../../api/Authcontext";
 import Spinner from "react-native-loading-spinner-overlay";
 const { height, width } = Dimensions.get("window");
 
-export default function Jobpost() {
+export default function Jobpost({ navigation }) {
   const { userInfo } = useContext(Authcontext);
   const data1 = [
     { key: "TW", value: "2 wheeler" },
@@ -35,7 +36,9 @@ export default function Jobpost() {
   ];
   const data2 = [
     { key: "908c63a4-9df3-4269-909d-ace6992ea9ee", value: "Heavy" },
-    { key: "81d93cb4-8690-4152-b24a-5bd1f07c34a2", value: "Fragile" },
+    { key: "f8c097c8-fcaa-4914-9a87-135f280b4675", value: "Light" },
+    { key: "e70e9340-276d-49bf-8078-37c1d0e669e3", value: "Heavy,Fragile" },
+    { key: "4ef5fdc1-c383-44f6-95cb-642cfd71eb1b", value: "Light,Fragile" },
   ];
   const [showModal, setShowModal] = useState(false);
   const [mapRegion, setMapRegion] = useState({});
@@ -91,6 +94,7 @@ export default function Jobpost() {
 
     if (!result.cancelled) {
       SetPhotoFront(result.uri);
+      Alert.alert("Image 1 Uploaded");
     }
   };
 
@@ -108,6 +112,7 @@ export default function Jobpost() {
 
     if (!result.cancelled) {
       SetPhotoBack(result.uri);
+      Alert.alert("Image 2 Uploaded");
     }
   };
   const userLocation = async () => {
@@ -126,16 +131,18 @@ export default function Jobpost() {
     });
     setLatitude(location.coords.latitude);
     setLongitude(location.coords.longitude);
+    Alert.alert("We Got Your Location!");
   };
 
   const LatLong = (drop) => {
     axios({
       method: "get",
-      url: `https://geocode.search.hereapi.com/v1/geocode?q=${drop}&apiKey=${API_TOKEN}`,
+      url: `https://geocode.search.hereapi.com/v1/geocode?q=${drop}&apiKey=oCb4sxN80Fxq7v7oI1K3w5_rOLE4ix4WyoLF2FZoMfo`,
     })
       .then((response) => {
         setDelLatitude(response.data.items[0].position.lat);
         setDelLongitude(response.data.items[0].position.lng);
+        Alert.alert("We Got Drop Location!");
         // console.log(latDel);
       })
       .catch(function (error) {
@@ -222,7 +229,7 @@ export default function Jobpost() {
     formData.append("expected_delivery_datetime", dateTime);
     SetIsloading(true);
     axios
-      .post(`${API_URL}/live-jobs/`, formData, {
+      .post(`API_URl/live-jobs/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${bearertoken}`,
@@ -234,6 +241,7 @@ export default function Jobpost() {
           SetIsloading(false);
         } else {
           alert("Job Added!");
+          navigation.navigate("home");
           SetIsloading(false);
         }
       })
@@ -445,6 +453,7 @@ export default function Jobpost() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <StatusBar hidden={false} />
     </View>
   );
 }

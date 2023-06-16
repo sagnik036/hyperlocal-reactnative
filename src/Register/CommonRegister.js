@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  Alert,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { RadioButton, TextInput } from "react-native-paper";
@@ -61,6 +63,8 @@ export default function CommonRegister({ navigation, route }) {
       SetError("Please Upload Your Aadhaar Front Photo");
     } else if (photoBack === null) {
       SetError("Please Upload Your Aadhaar Back Photo");
+    } else if (profilepic === null) {
+      SetError("Please Upload Your Profile Photo");
     } else if (selected === "PR" && shopSelected === "") {
       SetError("Please Select that You Own a Shop or Not");
     } else {
@@ -71,11 +75,19 @@ export default function CommonRegister({ navigation, route }) {
 
   //if validation is true then it will naviagte to either proprietor or Delivery Person
   const handlenavigation = () => {
-    if (selected === "PR" && shopSelected === "False") {
+    if (
+      selected === "PR" &&
+      shopSelected === "False" &&
+      DeliveryAccess !== null
+    ) {
       navigation.navigate("login");
-    } else if (shopSelected === "True") {
+    } else if (
+      selected === "PR" &&
+      shopSelected === "True" &&
+      DeliveryAccess !== null
+    ) {
       navigation.navigate("ShopDetails");
-    } else if (selected === "DP") {
+    } else if (selected === "DP" && DeliveryAccess !== null) {
       navigation.navigate("DeliveryRegister");
       //call the api
     } else {
@@ -131,6 +143,7 @@ export default function CommonRegister({ navigation, route }) {
 
     if (!result.cancelled) {
       SetProfilePic(result.uri);
+      Alert.alert("Profile Picture Uploaded");
     }
   };
 
@@ -459,6 +472,7 @@ export default function CommonRegister({ navigation, route }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <StatusBar hidden={false} />
     </View>
   );
 }

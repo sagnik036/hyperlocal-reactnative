@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   RefreshControl,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Button, IconButton } from "react-native-paper";
 import { Authcontext } from "../../api/Authcontext";
 import axios from "axios";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 const { height, width } = Dimensions.get("window");
 
 export default function Home({ navigation }) {
@@ -24,7 +25,7 @@ export default function Home({ navigation }) {
   const shoptoken = userInfo.token.access;
   const apicall = () => {
     axios
-      .get(`${API_URl}/shopdata/?search=${shopid}`, {
+      .get(`API_URl/shopdata/?search=${shopid}`, {
         headers: {
           Authorization: `Bearer ${shoptoken}`,
         },
@@ -41,7 +42,7 @@ export default function Home({ navigation }) {
 
   const showLiveJob = () => {
     axios
-      .get(`${API_URl}/live-jobsuser/`, {
+      .get(`API_URl/live-jobsuser/`, {
         headers: {
           Authorization: `Bearer ${shoptoken}`,
         },
@@ -62,7 +63,7 @@ export default function Home({ navigation }) {
     //console.log(jobid);
     axios
       .post(
-        `${API_URl}/cancel-job/`,
+        `API_URl/cancel-job/`,
         {
           job_id: jobid,
         },
@@ -221,15 +222,20 @@ export default function Home({ navigation }) {
           <Text style={styles.currentdetail}>No posts yet</Text>
         )}
       </View>
-      <Button
-        icon="pencil"
-        mode="elevated"
-        textColor="white"
-        style={styles.postjob}
-        onPress={() => navigation.navigate("Job Details")}
-      >
-        Post
-      </Button>
+      {livejob && livejob.data ? (
+        <Text></Text>
+      ) : (
+        <Button
+          icon="pencil"
+          mode="elevated"
+          textColor="white"
+          style={styles.postjob}
+          onPress={() => navigation.navigate("Job Details")}
+        >
+          Post
+        </Button>
+      )}
+      <StatusBar hidden={false} />
     </View>
   );
 }

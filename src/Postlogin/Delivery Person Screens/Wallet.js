@@ -4,12 +4,13 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
 import { Authcontext } from "../../../api/Authcontext";
 import axios from "axios";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 
 const { height, width } = Dimensions.get("window");
 
@@ -19,7 +20,7 @@ export default function Wallet({ navigation }) {
   const walletToken = userInfo.token.access;
   const walletApi = () => {
     axios
-      .get(`${API_URl}/wallet-details/`, {
+      .get(`API_URl/wallet-details/`, {
         headers: {
           Authorization: `Bearer ${walletToken}`,
         },
@@ -175,6 +176,7 @@ export default function Wallet({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
+      <StatusBar hidden={false} />
     </View>
   );
 }

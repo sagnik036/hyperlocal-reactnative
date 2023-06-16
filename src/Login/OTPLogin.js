@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { IconButton, TextInput } from "react-native-paper";
@@ -67,9 +68,10 @@ export default function OTPLogin({ navigation }) {
           style={styles.Button2}
           onPress={() => OTPlogin(mobile, otp)}
         >
-          <Text style={styles.ButtonText2}>Check OTP</Text>
+          <Text style={styles.ButtonText2}>Verify OTP</Text>
         </TouchableOpacity>
       </View>
+      <StatusBar hidden={false} />
     </View>
   );
 }

@@ -32,23 +32,28 @@ export const AuthProvider = ({ children, navigation }) => {
   const CommonRegister = (formdata) => {
     SetIsLoading(true);
     axios
-      .post(`${API_URl}/register/`, formdata, {
+      .post(`API_URl/register/`, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "No Auth",
         },
       })
       .then((res) => {
-        let userRegister = res.data;
-        SetUserRegister(res.status);
-        console.log(res.data);
-        console.log(res.status);
-        console.log(res.data.token.access);
-        setDeliveryAccess(userRegister.token.access);
-        AsyncStorage.setItem("UserRegister", JSON.stringify(userRegister));
-        AsyncStorage.setItem("DeliveryAccess", userRegister.token.access);
-        //console.log(userRegister.status);
-        SetIsLoading(false);
+        if (res.status.code == 403) {
+          alert("Resgistration Failed!");
+        } else {
+          let userRegister = res.data;
+          SetUserRegister(res.status);
+          console.log(res.data);
+          console.log(res.status);
+          console.log(res.data.token.access);
+          setDeliveryAccess(userRegister.token.access);
+          AsyncStorage.setItem("UserRegister", JSON.stringify(userRegister));
+          AsyncStorage.setItem("DeliveryAccess", userRegister.token.access);
+          //console.log(userRegister.status);
+          alert("Regsitered!");
+          SetIsLoading(false);
+        }
       })
       .catch((Error) => {
         console.log(Error);
@@ -67,10 +72,10 @@ export const AuthProvider = ({ children, navigation }) => {
     if (vehicle_type === "OT") {
       axios
         .post(
-          `${API_URl}/vehicledata/`,
+          `API_URl/vehicledata/`,
           {
+            vehicle_type: vehicle_type,
             vehicle_name: vehicle_name,
-            vehicle_number: vehicle_number,
           },
           {
             headers: {
@@ -80,8 +85,7 @@ export const AuthProvider = ({ children, navigation }) => {
         )
         .then((res) => {
           console.warn(res.data);
-
-          SetIsLoading(false);
+          alert("Vehicle Registered!");
         })
         .catch((Error) => {
           console.warn(Error);
@@ -90,7 +94,7 @@ export const AuthProvider = ({ children, navigation }) => {
     } else {
       axios
         .post(
-          `${API_URl}/vehicledata/`,
+          `API_URl/vehicledata/`,
           {
             vehicle_name: vehicle_name,
             vehicle_type: vehicle_type,
@@ -104,6 +108,8 @@ export const AuthProvider = ({ children, navigation }) => {
         )
         .then((res) => {
           console.warn(res.data);
+
+          alert("Vehicle Registered!");
           SetIsLoading(false);
         })
         .catch((Error) => {
@@ -118,7 +124,7 @@ export const AuthProvider = ({ children, navigation }) => {
     SetIsLoading(true);
     axios
       .post(
-        `${API_URl}/login/`,
+        `API_URl/login/`,
         {
           mobile_number: "91" + mobile_number,
           password: password,
@@ -140,7 +146,7 @@ export const AuthProvider = ({ children, navigation }) => {
         SetIsLoading(false);
       })
       .catch((e) => {
-        alert("Invalid Email or Password");
+        alert("Invalid Phone Number or Password");
         console.log(e);
         SetIsLoading(false);
       });
@@ -151,7 +157,7 @@ export const AuthProvider = ({ children, navigation }) => {
     SetIsLoading(true);
     axios
       .post(
-        `${API_URl}/login/`,
+        `API_URl/login/`,
         {
           mobile_number: "+91" + mobilenumber,
           otp: otp,
@@ -165,16 +171,24 @@ export const AuthProvider = ({ children, navigation }) => {
       )
       .then((res) => {
         console.log(res.data.status.message);
-        let userInfo = res.data;
-        setUserInfo(userInfo);
-        SetUser(userInfo.data.user_type);
-        setUserToken(userInfo.token.access);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        AsyncStorage.setItem("userToken", userInfo.token.access);
-        SetIsLoading(false);
+        if (
+          res.data.status.message ===
+          "Please enter a valid phone number with international code"
+        ) {
+          alert(res.data.status.message);
+        } else {
+          let userInfo = res.data;
+          setUserInfo(userInfo);
+          SetUser(userInfo.data.user_type);
+          setUserToken(userInfo.token.access);
+          AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+          AsyncStorage.setItem("userToken", userInfo.token.access);
+          SetIsLoading(false);
+          alert("OTP Sent!");
+        }
       })
       .catch((e) => {
-        alert("Invalid Email or Password");
+        alert("OTP did not match");
         console.log(e);
         SetIsLoading(false);
       });
@@ -192,12 +206,13 @@ export const AuthProvider = ({ children, navigation }) => {
   const GetOtp = (mobile_number) => {
     SetIsLoading(true);
     axios
-      .get(`${API_URl}/otp/?mobile_number=${"91" + mobile_number}`)
+      .get(`API_URl/otp/?mobile_number=${"91" + mobile_number}`)
       .then((res) => {
         //console.log(mobile_number);
         let otptoken = res.data.data.token;
         SetOtpToken(otptoken);
         SetIsLoading(false);
+        alert("OTP Sent!");
         //console.log(res.data.data.token);
       })
       .catch((e) => {
@@ -207,15 +222,15 @@ export const AuthProvider = ({ children, navigation }) => {
   };
 
   //RESET Password Authentication
-  const resetpass = (otp, mobile_number, password) => {
+  const resetpass = (otp, password) => {
     SetIsLoading(true);
     axios
       .post(
-        `${API_URl}/forget-password/`,
+        `API_URl/forget-password/`,
         {
           token: otptoken,
           otp: otp,
-          mobile_number: "91" + mobile_number,
+          mobile_number: "91" + mobile,
           password: password,
         },
         {
@@ -226,11 +241,20 @@ export const AuthProvider = ({ children, navigation }) => {
       )
       .then((res) => {
         console.log(res.data);
-        alert("Password updated");
-        SetIsLoading(false);
+        if (res.data.status.message === "Invalid mobile number") {
+          alert(res.data.status.message);
+          SetIsLoading(false);
+        } else if (res.data.status.message === "Invalid code entered") {
+          alert(res.data.status.message);
+          SetIsLoading(false);
+        } else {
+          alert("Password Changed!");
+          SetIsLoading(false);
+        }
       })
       .catch((e) => {
         alert("Error Ocuured! Try again Later");
+        SetIsLoading(false);
       });
   };
 
@@ -239,7 +263,7 @@ export const AuthProvider = ({ children, navigation }) => {
     SetIsLoading(true);
     let dId = userInfo.token.access;
     axios
-      .delete(`${API_URl}/delete-data/`, {
+      .delete(`API_URl/delete-data/`, {
         headers: {
           Authorization: `Bearer ${dId}`,
         },
@@ -260,7 +284,7 @@ export const AuthProvider = ({ children, navigation }) => {
   const ValidatePickup = (otp) => {
     axios
       .post(
-        `${API_URl}/accept-jobitem/`,
+        `API_URl/accept-jobitem/`,
         {
           job_id: jobid,
           token: otptoken,
@@ -288,7 +312,7 @@ export const AuthProvider = ({ children, navigation }) => {
   const ValidateDelivery = (otp) => {
     axios
       .post(
-        `${API_URl}/item-delivery/`,
+        `API_URl/item-delivery/`,
         {
           job_id: jobid,
           token: otptoken,
@@ -316,13 +340,18 @@ export const AuthProvider = ({ children, navigation }) => {
   const GetPropOTP = (mobilenumber) => {
     SetIsLoading(true);
     axios
-      .get(`${API_URl}/otp/?mobile_number=${mobilenumber}`)
+      .get(`API_URl/otp/?mobile_number=${mobilenumber}`)
       .then((res) => {
-        console.log(mobilenumber);
-        //let otptoken = res.data.data.token;
-        SetOtpToken(res.data.data.token);
-        console.log(otptoken);
-        SetIsLoading(false);
+        if (res.status.code === 403) {
+          alert("Wrong OTP provided!");
+        } else {
+          console.log(mobilenumber);
+          //let otptoken = res.data.data.token;
+          SetOtpToken(res.data.data.token);
+          console.log(otptoken);
+          alert("OTP sent successfully");
+          SetIsLoading(false);
+        }
       })
       .catch((e) => {
         console.log(e);
@@ -333,13 +362,18 @@ export const AuthProvider = ({ children, navigation }) => {
   const GetDelOTP = (mobilenumber) => {
     SetIsLoading(true);
     axios
-      .get(`${API_URl}/otp/?mobile_number=${mobilenumber}`)
+      .get(`API_URl/otp/?mobile_number=${mobilenumber}`)
       .then((res) => {
-        //console.log(mobile_number);
-        //let delotp = res.data.data.token;
-        SetOtpToken(res.data.data.token);
-        SetIsLoading(false);
-        //console.log(res.data.data.token);
+        if (res.status.code === 403) {
+          alert("Wrong OTP provided!");
+        } else {
+          console.log(mobilenumber);
+          //let otptoken = res.data.data.token;
+          SetOtpToken(res.data.data.token);
+          console.log(otptoken);
+          alert("OTP sent successfully");
+          SetIsLoading(false);
+        }
       })
       .catch((e) => {
         console.log(e);

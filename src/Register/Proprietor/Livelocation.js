@@ -5,6 +5,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Linking,
+  Alert,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 //import MapView, { Marker } from "react-native-maps";
@@ -66,6 +68,7 @@ export default function Livelocation({ navigation, route }) {
 
     if (!result.cancelled) {
       SetPhotoFront(result.uri);
+      Alert.alert("Shop Photo Uploaded!");
     }
   };
 
@@ -93,6 +96,7 @@ export default function Livelocation({ navigation, route }) {
       });
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
+      Alert.alert("Check your Location Now!");
     }
   };
 
@@ -116,7 +120,7 @@ export default function Livelocation({ navigation, route }) {
     });
     Setloading(true);
     axios
-      .post(`${API_URl}/shopdata/`, formDataShop, {
+      .post(`API_URl/shopdata/`, formDataShop, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${DeliveryAccess}`,
@@ -124,6 +128,7 @@ export default function Livelocation({ navigation, route }) {
       })
       .then((res) => {
         console.log(res.data.status.detail);
+        alert("Shop Registered!");
         Setloading(false);
         Handlenavigation();
       })
@@ -206,6 +211,7 @@ export default function Livelocation({ navigation, route }) {
       <TouchableOpacity style={styles.Button} onPress={() => validation()}>
         <Text style={styles.ButtonText}>Create Account</Text>
       </TouchableOpacity>
+      <StatusBar hidden={false} />
     </View>
   );
 }

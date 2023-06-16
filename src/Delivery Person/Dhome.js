@@ -5,6 +5,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
@@ -37,7 +38,7 @@ export default function Dhome({ navigation }) {
   };
   const vInfo = () => {
     axios
-      .get(`${API_URl}/vehicledata/?search=${vId}`, {
+      .get(`API_URl/vehicledata/?search=${vId}`, {
         headers: {
           Authorization: `Bearer ${vToken}`,
         },
@@ -55,7 +56,7 @@ export default function Dhome({ navigation }) {
   };
   const showLivedelivery = () => {
     axios
-      .get(`${API_URl}/live-jobsuser/`, {
+      .get(`API_URl/live-jobsuser/`, {
         headers: {
           Authorization: `Bearer ${vToken}`,
         },
@@ -71,6 +72,11 @@ export default function Dhome({ navigation }) {
   };
   useEffect(() => {
     vInfo();
+    const interval = setInterval(() => {
+      vInfo();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
   useEffect(() => {
     vType();
@@ -103,11 +109,30 @@ export default function Dhome({ navigation }) {
       <Text style={styles.Dname}>
         {userInfo.data.first_name} {userInfo.data.last_name}
       </Text>
-      <Text style={styles.Dcount}>
-        Total
-        <Text style={{ fontWeight: "800" }}> {userInfo.data.jobs_count} </Text>
-        deliveries till now
-      </Text>
+
+      {cInfo && cInfo.results ? (
+        <>
+          <Text style={styles.Dcount}>
+            Total{" "}
+            <Text style={{ fontWeight: "800" }}>
+              {" "}
+              {cInfo.results[0].total_delivery_completed}{" "}
+            </Text>
+            deliveries till now
+          </Text>
+        </>
+      ) : (
+        <>
+          <Text style={styles.Dcount}>
+            Total
+            <Text style={{ fontWeight: "800" }}>
+              {userInfo.data.jobs_count}
+            </Text>
+            deliveries till now
+          </Text>
+        </>
+      )}
+
       <View style={styles.Vtype}>
         {cInfo && cInfo.results ? (
           <Text>{wheelType} wheeler</Text>
@@ -162,6 +187,8 @@ export default function Dhome({ navigation }) {
                     ? styles.processing
                     : livedelivery.data.status === "Picking"
                     ? styles.picking
+                    : livedelivery.data.status === "Delivering"
+                    ? styles.picking
                     : styles.completed,
                 ]}
               >
@@ -188,6 +215,7 @@ export default function Dhome({ navigation }) {
           <Text style={styles.currentdetails}>Not applied for any job yet</Text>
         )}
       </View>
+      <StatusBar hidden={false} />
     </View>
   );
 }

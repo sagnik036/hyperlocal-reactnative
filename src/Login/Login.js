@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { Authcontext } from "../../api/Authcontext";
@@ -86,12 +87,13 @@ export default function Login({ navigation }) {
       <Text style={styles.text4}>
         Don't have an account?{" "}
         <Text
-          onPress={() => navigation.navigate("1")}
+          onPress={() => navigation.navigate("mobileOTPreg")}
           style={styles.underlineTextStyle1}
         >
           Signup
         </Text>
       </Text>
+      <StatusBar hidden={false} />
     </View>
   );
 }

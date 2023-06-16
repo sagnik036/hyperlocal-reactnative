@@ -7,14 +7,15 @@ import {
   Linking,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 import axios from "axios";
 import { Authcontext } from "../../../api/Authcontext";
 
 const { height, width } = Dimensions.get("window");
-export default function JobDetails({ route }) {
+export default function JobDetails({ route, navigation }) {
   const { userInfo, JobId } = useContext(Authcontext);
   const jobtoken = userInfo.token.access;
   //const pickuplat = data.data.pickup_location.coordinates[0];
@@ -28,7 +29,7 @@ export default function JobDetails({ route }) {
   };
   const jobD = () => {
     axios
-      .get(`${API_URl}/jobs-details/${route.params.paramKey}/`, {
+      .get(`API_URl/jobs-details/${route.params.paramKey}/`, {
         headers: { Authorization: `Bearer ${jobtoken}` },
       })
       .then((res) => {
@@ -52,7 +53,7 @@ export default function JobDetails({ route }) {
   const acceptjob = () => {
     axios
       .post(
-        `${API_URl}/job-accept/`,
+        `API_URl/job-accept/`,
         {
           job_id: route.params.paramKey,
         },
@@ -70,6 +71,7 @@ export default function JobDetails({ route }) {
           alert(
             "You Have Accepted The Job, Go To Home Screen For More Details"
           );
+          navigation.navigate("Dhome");
         }
       })
       .catch((err) => {
@@ -92,11 +94,17 @@ export default function JobDetails({ route }) {
               Description : <Text>{data.data.description}</Text>
             </Text>
             <Text style={styles.AllDetailText}>
-              Product Category :{" "}
+              Product Category:{" "}
               <Text style={styles.AllDetailText}>
                 {data.data.category === "908c63a4-9df3-4269-909d-ace6992ea9ee"
                   ? "Heavy"
-                  : "Fragile"}
+                  : data.data.category ===
+                    "f8c097c8-fcaa-4914-9a87-135f280b4675"
+                  ? "Light"
+                  : data.data.category ===
+                    "e70e9340-276d-49bf-8078-37c1d0e669e3"
+                  ? "Heavy, Fragile"
+                  : "Light, Fragile"}
               </Text>
             </Text>
             <Text style={styles.AllDetailText}>
@@ -225,6 +233,7 @@ export default function JobDetails({ route }) {
           </Text>
         </TouchableOpacity>
       </ScrollView>
+      <StatusBar hidden={false} />
     </View>
   );
 }

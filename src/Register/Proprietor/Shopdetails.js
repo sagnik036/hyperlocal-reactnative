@@ -5,6 +5,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import React, { useState } from "react";
 import { TextInput } from "react-native-paper";
@@ -98,6 +99,7 @@ export default function Shopdetails({ navigation }) {
       <TouchableOpacity style={styles.Button} onPress={() => validation()}>
         <Text style={styles.NextBtn}>NEXT</Text>
       </TouchableOpacity>
+      <StatusBar hidden={false} />
     </View>
   );
 }

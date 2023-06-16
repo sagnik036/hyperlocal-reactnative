@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { TextInput } from "react-native-paper";
@@ -44,6 +45,7 @@ export default function ForgetPassword({ navigation }) {
           <Text style={styles.ButtonText}>Send OTP</Text>
         </TouchableOpacity>
       </View>
+      <StatusBar hidden={false} />
     </View>
   );
 }

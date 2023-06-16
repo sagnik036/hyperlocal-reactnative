@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   RefreshControl,
   FlatList,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 import axios from "axios";
 import { Authcontext } from "../../../api/Authcontext";
 const { height, width } = Dimensions.get("window");
@@ -23,7 +24,7 @@ export default function Feed({ navigation }) {
   const token = userInfo.token.access;
   const feedapicall = () => {
     axios
-      .get(`${API_URl}/live-jobs/`, {
+      .get(`API_URl/live-jobs/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,12 +45,12 @@ export default function Feed({ navigation }) {
 
   useEffect(() => {
     feedapicall();
-    // let interval = setInterval(() => {
-    //   feedapicall();
-    // }, 5000);
-    // return () => {
-    //   clearInterval(interval);
-    // };
+    let interval = setInterval(() => {
+      feedapicall();
+    }, 5000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   function getFormattedDuration(duration) {
@@ -160,6 +161,7 @@ export default function Feed({ navigation }) {
           No job available right now
         </Text>
       )}
+      <StatusBar hidden={false} />
     </View>
   );
 }

@@ -1,17 +1,24 @@
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  StatusBar,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { IconButton } from "react-native-paper";
-import { color, not, set } from "react-native-reanimated";
-import { useNavigation } from "@react-navigation/native";
+// import { color, not, set } from "react-native-reanimated";
+// import { useNavigation } from "@react-navigation/native";
 import { Authcontext } from "../../../api/Authcontext";
 import axios from "axios";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 
 const { height, width } = Dimensions.get("window");
 
 export default function Dprofile({ navigation }) {
-  const { userInfo, DeleteAcc } = useContext(Authcontext);
+  const { userInfo, DeleteAcc, message } = useContext(Authcontext);
   const [cInfo, setcInfo] = useState(null);
   const [wheelType, setwheelType] = useState(null);
   const vToken = userInfo.token.access;
@@ -36,7 +43,7 @@ export default function Dprofile({ navigation }) {
   };
   const vInfo = () => {
     axios
-      .get(`${API_URl}/vehicledata/?search=${vId}`, {
+      .get(`API_URl/vehicledata/?search=${vId}`, {
         headers: {
           Authorization: `Bearer ${vToken}`,
         },
@@ -104,14 +111,22 @@ export default function Dprofile({ navigation }) {
 
       <View style={styles.roundedrect}>
         <Text style={styles.Dstatus}>Delivery Status</Text>
-        <Text style={styles.Dstatusn}>
-          Total
-          <Text style={{ fontWeight: "500" }}>
-            {" "}
-            {userInfo.data.jobs_count}{" "}
-          </Text>
-          deliveries till now.
-        </Text>
+        {cInfo && cInfo.results ? (
+          <>
+            <Text style={styles.Dstatusn}>
+              Total{" "}
+              <Text style={{ fontWeight: "800" }}>
+                {" "}
+                {cInfo.results[0].total_delivery_completed}{" "}
+              </Text>
+              deliveries till now
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text style={styles.Dstatusn}>No Information Available</Text>
+          </>
+        )}
       </View>
 
       <View style={styles.roundedrect2}>
@@ -129,35 +144,40 @@ export default function Dprofile({ navigation }) {
             </Text>
           </>
         ) : (
-          <Text>No vehicle information available</Text>
+          <Text style={styles.Vdetails}>No vehicle information available</Text>
         )}
       </View>
 
       <View style={{ padding: 40 }}>
-        <TouchableOpacity
-          style={{
-            justifyContent: "center",
-            padding: 10,
-            borderRadius: 7,
-            backgroundColor: "#F02121",
-            height: 60,
-            bottom: -55,
-            //left: -70,
-          }}
-          onPress={() => handleDeleteAccount()}
-        >
-          <Text
+        {message === "You don't have any vehicle" ? (
+          <Text></Text>
+        ) : (
+          <TouchableOpacity
             style={{
-              textAlign: "center",
-              color: "white",
-              fontSize: 20,
-              fontWeight: "500",
+              justifyContent: "center",
+              padding: 10,
+              borderRadius: 7,
+              backgroundColor: "#F02121",
+              height: 60,
+              bottom: -55,
+              //left: -70,
             }}
+            onPress={() => handleDeleteAccount()}
           >
-            Delete Account
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                textAlign: "center",
+                color: "white",
+                fontSize: 20,
+                fontWeight: "500",
+              }}
+            >
+              Delete Account
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
+      <StatusBar hidden={false} />
     </View>
   );
 }

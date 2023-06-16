@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { API_URl } from "@env";
@@ -40,7 +41,7 @@ export default function Deliveryjobdetails({ route }) {
   };
   const jobD = () => {
     axios
-      .get(`${API_URl}/jobs-details/${route.params.paramKey}/`, {
+      .get(`API_URl/jobs-details/${route.params.paramKey}/`, {
         headers: { Authorization: `Bearer ${jobtoken}` },
       })
       .then((res) => {
@@ -84,11 +85,17 @@ export default function Deliveryjobdetails({ route }) {
               Description : <Text>{data.data.description}</Text>
             </Text>
             <Text style={styles.AllDetailText}>
-              Product Category :{" "}
+              Product Category:{" "}
               <Text style={styles.AllDetailText}>
                 {data.data.category === "908c63a4-9df3-4269-909d-ace6992ea9ee"
                   ? "Heavy"
-                  : "Fragile"}
+                  : data.data.category ===
+                    "f8c097c8-fcaa-4914-9a87-135f280b4675"
+                  ? "Light"
+                  : data.data.category ===
+                    "e70e9340-276d-49bf-8078-37c1d0e669e3"
+                  ? "Heavy, Fragile"
+                  : "Light, Fragile"}
               </Text>
             </Text>
             <Text style={styles.AllDetailText}>
@@ -203,36 +210,45 @@ export default function Deliveryjobdetails({ route }) {
               value={otp}
               onChangeText={(value) => setOtp(value)}
             />
-            <TouchableOpacity
-              style={styles.sendotp}
-              onPress={() => GetPropOTP(data.data.pickup_contact_phone)}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "white",
-                  fontWeight: "700",
-                  fontSize: 20,
-                }}
-              >
-                Send OTP to Proprietor
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.sendotp}
-              onPress={() => GetDelOTP(data.data.delivery_contact_phone)}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "white",
-                  fontWeight: "700",
-                  fontSize: 20,
-                }}
-              >
-                Send OTP to Customer
-              </Text>
-            </TouchableOpacity>
+
+            {data.data.status === "Picking" ? (
+              <>
+                <TouchableOpacity
+                  style={styles.sendotp}
+                  onPress={() => GetPropOTP(data.data.pickup_contact_phone)}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontWeight: "700",
+                      fontSize: 20,
+                    }}
+                  >
+                    Send OTP to Proprietor
+                  </Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <>
+                <TouchableOpacity
+                  style={styles.sendotp}
+                  onPress={() => GetDelOTP(data.data.delivery_contact_phone)}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontWeight: "700",
+                      fontSize: 20,
+                    }}
+                  >
+                    Send OTP to Customer
+                  </Text>
+                </TouchableOpacity>
+              </>
+            )}
+
             {data.data.status === "Picking" ? (
               <TouchableOpacity
                 style={styles.Validatepickup}
@@ -273,6 +289,7 @@ export default function Deliveryjobdetails({ route }) {
 
         <View style={{ height: 20, width: 20 }} />
       </ScrollView>
+      <StatusBar hidden={false} />
     </View>
   );
 }

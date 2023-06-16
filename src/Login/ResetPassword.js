@@ -6,6 +6,7 @@ import {
   ScrollView,
   Button,
   Dimensions,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { TextInput } from "react-native-paper";
@@ -16,7 +17,6 @@ const { height, width } = Dimensions.get("window");
 
 export default function ResetPassword({ navigation }) {
   const [otp, enterOtp] = useState("");
-  const [mobileNumber, setMobilenumber] = useState("");
   const [pass, setPass] = useState("");
   const [newpass, setNewpass] = useState("");
   const [isSecureEntry, isSetSecureEntry] = useState(true);
@@ -24,16 +24,12 @@ export default function ResetPassword({ navigation }) {
   const [Error, SetError] = useState("");
   const { resetpass, isLoading } = useContext(Authcontext);
   const validation = () => {
-    if (otp === "" && mobileNumber === "" && pass === "" && newpass === "") {
+    if (otp === "" && pass === "" && newpass === "") {
       SetError("All fields are empty!");
     } else if (otp === "") {
       SetError("Enter your otp");
     } else if (otp.length != 6) {
       SetError("otp not valid");
-    } else if (isNaN(mobileNumber)) {
-      SetError("Enter number");
-    } else if (mobileNumber.length != 10) {
-      SetError("enter valid number");
     } else if (pass === "") {
       SetError("Enter your password");
     } else if (pass.length < 6) {
@@ -44,7 +40,7 @@ export default function ResetPassword({ navigation }) {
       SetError("Passwords do not match");
     } else {
       navigation.navigate("login");
-      resetpass(otp, mobileNumber, pass);
+      resetpass(otp, pass);
     }
   };
   return (
@@ -64,7 +60,7 @@ export default function ResetPassword({ navigation }) {
         onChangeText={(value) => enterOtp(value)}
       />
 
-      <TextInput
+      {/* <TextInput
         style={styles.input1}
         mode="outlined"
         outlineColor="red"
@@ -74,7 +70,7 @@ export default function ResetPassword({ navigation }) {
         value={mobileNumber}
         activeOutlineColor="red"
         onChangeText={(value) => setMobilenumber(value)}
-      />
+      /> */}
 
       <TextInput
         style={styles.input1}
@@ -126,6 +122,7 @@ export default function ResetPassword({ navigation }) {
           Resend OTP
         </Text>
       </Text>
+      <StatusBar hidden={false} />
     </View>
   );
 }

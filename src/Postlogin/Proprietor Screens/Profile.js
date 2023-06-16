@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
 import { Authcontext } from "../../../api/Authcontext";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 import axios from "axios";
 const { height, width } = Dimensions.get("window");
 
@@ -20,7 +21,7 @@ export default function Profile({ navigation }) {
   const shoptoken = userInfo.token.access;
   const apicall = () => {
     axios
-      .get(`${API_URl}/shopdata/?search=${shopid}`, {
+      .get(`API_URl/shopdata/?search=${shopid}`, {
         headers: {
           Authorization: `Bearer ${shoptoken}`,
         },
@@ -110,6 +111,7 @@ export default function Profile({ navigation }) {
       >
         <Text style={styles.buttontext}>Delete Account</Text>
       </TouchableOpacity>
+      <StatusBar hidden={false} />
     </View>
   );
 }
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: width / 15,
     top: height / 40,
-    backgroundColor: "red",
+    backgroundColor: "white",
     justifyContent: "center",
     padding: 1,
     borderRadius: 50,

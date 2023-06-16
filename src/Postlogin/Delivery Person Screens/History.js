@@ -1,8 +1,15 @@
-import { View, Text, Dimensions, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  FlatList,
+  StatusBar,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Authcontext } from "../../../api/Authcontext";
 import axios from "axios";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 
 const { height, width } = Dimensions.get("window");
 
@@ -12,7 +19,7 @@ export default function History({ navigation }) {
   const walletToken = userInfo.token.access;
   const TransactionHistory = () => {
     axios
-      .get(`${API_URl}/wallet-details/`, {
+      .get(`API_URl/wallet-details/`, {
         headers: {
           Authorization: `Bearer ${walletToken}`,
         },
@@ -71,6 +78,7 @@ export default function History({ navigation }) {
       ) : (
         <Text style={styles.Nodata}>No Previous Transactions Available</Text>
       )}
+      <StatusBar hidden={false} />
     </View>
   );
 }

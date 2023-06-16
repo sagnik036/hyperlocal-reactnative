@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import React from "react";
 import { IconButton } from "react-native-paper";
@@ -157,6 +158,7 @@ export default function Helep({ navigation }) {
         </View>
         <View style={{ height: width / 5 }} />
       </ScrollView>
+      <StatusBar hidden={false} />
     </View>
   );
 }

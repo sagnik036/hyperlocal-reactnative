@@ -6,10 +6,11 @@ import {
   Dimensions,
   FlatList,
   Image,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
-import { API_URl } from "@env";
+//import { API_URl } from "@env";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Authcontext } from "../../../api/Authcontext";
@@ -24,7 +25,7 @@ export default function Deliveries({ navigation }) {
   const postedJobAPI = () => {
     SetLoading(true);
     axios
-      .get(`${API_URl}/job-history/`, {
+      .get(`API_URl/job-history/`, {
         headers: {
           Authorization: `Bearer ${posttoken}`,
         },
@@ -122,7 +123,7 @@ export default function Deliveries({ navigation }) {
           />
         </View>
       ) : (
-        <Text>Delivery History Not Found</Text>
+        <Text style={styles.Nodata}>Delivery History Not Found</Text>
       )}
       {/* <View style={styles.flatlistc}>
         <FlatList
@@ -135,6 +136,7 @@ export default function Deliveries({ navigation }) {
           )}
         />
       </View> */}
+      <StatusBar hidden={false} />
     </View>
   );
 }
@@ -178,5 +180,11 @@ const styles = StyleSheet.create({
   },
   completed: {
     color: "green",
+  },
+  Nodata: {
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 20,
+    top: width,
   },
 });
